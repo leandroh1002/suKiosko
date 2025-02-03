@@ -1,0 +1,140 @@
+
+.wrapper {
+    margin-top: 40px;
+    width: 100%;
+
+    .container_header {
+        width: 100%;
+
+        .title {
+            margin: 0px 0px 10px 0px;
+        }
+    }
+
+    .tableWrapper {
+        width: 100%;
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    .tableWrapper::-webkit-scrollbar {
+        width: 5px;
+        border-radius: 10px;
+        margin-left: 10px;
+    }
+
+
+    .tableWrapper::-webkit-scrollbar-track {
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+
+    .tableWrapper::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+    }
+
+    .table {
+        border-collapse: separate;
+        border-spacing: 0 10px;
+        width: 100%;
+        text-align: left;
+
+        thead {
+            tr {
+                height: 50px;
+
+                .firstTh {
+                    padding-left: 40px;
+                }
+
+
+
+                .centerTd {
+                    text-align: center
+                }
+
+                .lastTd {
+                    padding-right: 10px;
+                }
+            }
+        }
+
+        tbody {
+            width: 100%;
+
+            tr {
+                background-color: rgb(245, 245, 245);
+
+                .firstTd {
+                    padding-left: 40px;
+                }
+
+
+
+                .centerTd {
+                    text-align: center
+                }
+
+                .lastTd {
+                    padding-right: 10px;
+                }
+
+                .mail {
+                    width: 90%;
+                    padding: 8px 5px;
+                    border-radius: 10px;
+                    border: none;
+                    transition: .2s;
+                    cursor: pointer;
+                }
+
+                .mail:hover {
+                    transform: scale(1.1);
+                    transition: .2s
+                }
+
+                .activo {
+                    width: 90%;
+                    padding: 8px 5px;
+                    border-radius: 10px;
+                    border: none;
+                    transition: .2s;
+                    cursor: pointer;
+                }
+
+                .activo:hover {
+                    transform: scale(1.1);
+                    transition: .2s;
+                }
+
+                .inactivo {
+                    width: 90%;
+                    padding: 8px 5px;
+                    border-radius: 10px;
+                    border: none;
+                    transition: .2s;
+                    cursor: pointer;
+                }
+
+                .inactivo:hover {
+                    transform: scale(1.1);
+                    transition: .2s;
+                }
+                .cancel {
+                    width: 90%;
+                    padding: 8px 5px;
+                    border-radius: 10px;
+                    border: none;
+                    transition: .2s;
+                    cursor: pointer;
+                }
+
+                .cancel:hover {
+                    transform: scale(1.1);
+                    transition: .2s;
+                }
+            }
+        }
+    }
+}

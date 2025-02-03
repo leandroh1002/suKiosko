@@ -1,0 +1,73 @@
+.mainContainer 
+  display: flex
+  width: 100%
+  min-height: 200px
+  margin: 65px 263px 0px 263px
+
+
+.secondaryContainer 
+  display: flex
+
+
+.containerLeft 
+  width: 50%
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+
+
+.containerLeft h1 
+  text-align: left
+
+
+.containerLeft p 
+  text-align: left
+  margin: 20px 0 20px 0
+
+
+.containerLeft .parrafo
+  text-align: left
+  margin-top: 10px
+
+
+.containerRight 
+  width: 50%
+  display: flex
+  justify-content: flex-end
+
+
+@media (max-width: 1360px) 
+  .mainContainer 
+    margin: 65px 100px 0px 100px
+@media (max-width: 1000px) 
+  .mainContainer 
+    margin: 65px 100px 0px 100px
+  .containerRight 
+    img
+      width: 400px
+      height: 400px
+      position: relative
+      top: 100px
+      left: 50px
+
+
+@media (max-width: 768px) 
+  
+  .mainContainer 
+    margin: 65px 20px 0px 20px
+  
+
+  .secondaryContainer 
+    flex-direction: column
+  
+
+  .containerLeft,
+  .containerRight 
+    width: 100%
+  
+
+  .containerRight 
+    justify-content: center
+    margin-top: 20px
+    img
+      width: 200px

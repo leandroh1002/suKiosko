@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:700|Roboto%20Flex:400');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities{
+  .paused{
+    animation-play-state: paused;
+  }
+}
+
+:root {
+    line-height: 1.5;
+    font-weight: 400;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+  
+  body {
+    text-align: center;
+    font-family: 'Roboto Flex';
+    font-weight: 400;
+    background-color: #e5efff;
+    color: #002766;
+  }
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Poppins';
+  font-weight: 700;
+}
+
+html {font-size: 100%;} /* 16px */
+
+h1 {font-size: 4.210rem; /* 67.36px */}
+
+h2 {font-size: 3.158rem; /* 50.56px */}
+
+h3 {font-size: 2.369rem; /* 37.92px */}
+
+h4 {font-size: 1.777rem; /* 28.48px */}
+
+h5 {font-size: 1.333rem; /* 21.28px */}
+
+small {font-size: 0.750rem; /* 12px */}
