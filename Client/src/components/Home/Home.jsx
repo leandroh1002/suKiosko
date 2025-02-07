@@ -33,8 +33,8 @@ function Home() {
 
   return (
     <div className="flex justify-center pt-60 gap-3">
-      <Link to={PATHROUTES.DASHBOARD}><button>Gestionar</button></Link>
-      <Link to={PATHROUTES.DASHBOARD}><button>Vender</button></Link>
+      <Link to={PATHROUTES.GESTIONAR}><button>Gestionar</button></Link>
+      <Link to={PATHROUTES.VENDER}><button>Vender</button></Link>
     </div>
   )
 }
