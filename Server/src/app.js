@@ -30,4 +30,4 @@ server.use('/', routes);
 // Implementación de Swagger
 server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-module.exports = server;
+module.exports = {server};
