@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { Sequelize } = require('sequelize');
 
 const {
     DB_USER, DB_PASSWORD, DB_HOST, DIALECT_OPTIONS, SSL, DB_NAME
