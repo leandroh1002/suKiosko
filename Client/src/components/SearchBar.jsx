@@ -29,8 +29,8 @@ export default function SearchBar(props) {
   }
 
   return (
-    <div className={styles.container}>
-      <form className={styles.container_form} onSubmit={handleSubmit}>
+    <div className="">
+      <form className="" onSubmit={handleSubmit}>
         <input
           type="search"
           placeholder="Buscar usuario por Nombre Completo"
