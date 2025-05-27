@@ -92,23 +92,3 @@ function TableUser(props) {
 }
 
 export default TableUser;
-
-/*
-const [agregados, setAgregados] = useState({});
-
-const handleAgregar = (producto) => {
-  setAgregados((prev) => ({ ...prev, [producto.id]: true }));
-  handleShowForm();
-  onMailButtonClick(producto.productos.email);
-};
-
-
-<button
-  className={styles.mail}
-  onClick={() => handleAgregar(producto)}
-  disabled={agregados[producto.id]}
->
-  {agregados[producto.id] ? "Agregado" : "Agregar al carrito"}
-</button>
-
-*/
