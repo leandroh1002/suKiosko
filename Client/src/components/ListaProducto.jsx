@@ -1,16 +1,15 @@
-import React from 'react'
-import SearchBar from './SearchBar'
-import TableProduct from './TableProduct'
+import React, { useState } from 'react';
+import FindUserAdmin from './FindUserAdmin/FindUserAdmin';
 
 function ListaProducto() {
+  const [searchInput, setSearchInput] = useState("");
+
   return (
-    <div>ListaProducto
-      <p>Barra de busqueda</p><SearchBar searchInput={searchInput} setSearchInput={setSearchInput}/>
-      <p>Lista de productos</p><TableProduct people={people} onMailButtonClick={onMailButtonClick} handleShowForm={handleShowForm} searchInput={searchInput} />
-      <button>Cancelar</button>
-      <p>Total:</p>
+    <div>
+    {/* <div className='grid min-h-[90dvh] grid-rows-[1fr_auto] m-5'> */}
+      <content><FindUserAdmin searchInput={searchInput} /></content>
     </div>
-  )
+  );
 }
 
-export default ListaProducto
+export default ListaProducto;
