@@ -44,7 +44,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { MovimientoStock, DetalleVenta, Producto, Rubro, Venta, Empleado, Cliente } = sequelize.models;
+const { MovimientoStock, DetalleVenta, Producto, Rubro, Venta, Empleado, Cliente, UnidadMedida } = sequelize.models;
 
 // Relaciones
 // Rubros y Productos (Uno-a-Muchos)
@@ -70,6 +70,10 @@ Venta.belongsTo(Cliente, { foreignKey: 'cliente_id' });//Cada venta puede estar 
 // Productos y MovimientosStock (Uno-a-Muchos)
 Producto.hasMany(MovimientoStock, { foreignKey: 'producto_id' });//Un producto puede tener muchos movimientos de stock
 MovimientoStock.belongsTo(Producto, { foreignKey: 'producto_id' });//Cada movimiento de stock está asociado a un producto
+
+// Productos y UnidadesMedida (Uno-a-Uno)
+UnidadMedida.hasOne(Producto, { foreignKey: 'unidad_medida_id' }); // Una unidad de medida puede estar asociada a un producto
+Producto.belongsTo(UnidadMedida, { foreignKey: 'unidad_medida_id' }); // Cada producto tiene una unidad de medida
 
 module.exports = {
     ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
