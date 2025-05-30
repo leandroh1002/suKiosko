@@ -30,7 +30,7 @@ exports.crearVenta = async (data) => {
       empleado_id,
       cliente_id,
     }, { transaction: t });
-console.log(items, "items desde el servicio");
+// console.log(items, "items desde el servicio");
 
     // Crear los detalles de la venta
     for (const item of items) {
