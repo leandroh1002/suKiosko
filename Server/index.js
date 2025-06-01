@@ -1,8 +1,8 @@
 require('dotenv').config();
-// const { PORT, SYNC_FORCE } = process.env;
+const { PORT, SYNC_FORCE } = process.env;
 const { server } = require('./src/app.js');
 const { conn } = require('./src/db.js');
-const PORT = process.env.PORT ?? 3030
+//const PORT = process.env.PORT ?? 3030
 
 async function startServer() {
     try {

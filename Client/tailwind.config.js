@@ -15,6 +15,9 @@ export default {
           to: { transform: "translatex(-100%)"},
         },
       },
+      backgroundImage: {
+        'icon-cross': "url('./src/assets/Icons/IconCross.png')",
+      },
     },
   },
   plugins: [],
