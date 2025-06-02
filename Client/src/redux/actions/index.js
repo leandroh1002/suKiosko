@@ -11,13 +11,6 @@ import {
   FILTERED_PUBLISH,
   CLEAR_ALL_PUBLISH,
   CLEAR_FILTERED_PUBLISH,
-  GET_PRODUCTS,
-  ADD_PRODUCT_TO_CART,
-  CLEAR_VENTAS,
-  REMOVE_PRODUCT_FROM_CART,
-  VENTA_EXITOSA,
-  VENTA_ERROR,
-  UPDATE_PRODUCT_QUANTITY,
 } from "../actions/action-types";
 
 const REACT_APP_API_URL = import.meta.env.VITE_BASE_URL;
@@ -45,6 +38,8 @@ const getAllPublish = () => {
     };
   };
 const getFilteredPublish = (idCarrer) => {
+  console.log(idCarrer);
+  
     return async (dispatch) => {
       try {
         dispatch({
@@ -65,19 +60,18 @@ const getFilteredPublish = (idCarrer) => {
       }
     };
   };
-const allProduct = (query) => {
+const getAllCarrer = () => {
     return async (dispatch) => {
       try {
-        const response = await axios.get(`${REACT_APP_API_URL}/productos${query}`);
+        const response = await axios.get(`${REACT_APP_API_URL}/carrer`);
         return dispatch({
-          type: GET_PRODUCTS,
+          type: GET_CARRER,
           payload: response.data,
         });
       } catch (error) {
-        console.log(error);
         Swal.fire({
           title: `${error}`,
-          text: "Error al obtener los productos",
+          text: "Error al obtener las carreras",
           icon: 'warning',
           confirmButtonText: 'Aceptar'
         });
@@ -103,35 +97,6 @@ const getAllCompanies = () => {
     };
   };
   
-
-  const addProductToCart = (producto, cantidad) => {
-    return {
-      type: ADD_PRODUCT_TO_CART,
-      payload: {
-        ...producto,
-        cantidad,
-      },
-    };
-  };
-
-  const removeProductFromCart = (id) => {
-    return {
-      type: REMOVE_PRODUCT_FROM_CART,
-      payload: id,
-    };
-  };
-
-  const postVenta = (data) => async (dispatch) => {
-    console.log("data de la venta", data);
-    try {
-      const response = await axios.post('/ventas', data); // Ajustá la URL según tu backend
-      dispatch({ type: 'VENTA_EXITOSA', payload: response.data });
-    } catch (error) {
-      console.error(error);
-      dispatch({ type: 'VENTA_ERROR', payload: error.response?.data?.error || 'Error desconocido' });
-    }
-  };
-
 const getUser = (userData) => {
   return async (dispatch) => {
     try {
@@ -163,52 +128,6 @@ const logOutUser = () => {
   };
 };
 
-
-const clear = () => {
-  return async (dispatch) => {
-    try {
-      return dispatch({
-        type: GET_PRODUCTS,
-        payload: "",
-      });
-    } catch (error) {
-      Swal.fire({
-        title: `${error}`,
-        text: "Error al limpiar: Clear",
-        icon: 'warning',
-        confirmButtonText: 'Aceptar'
-      });
-    }
-  };
-};
-
-
-const clearventas = () => {
-  console.log("ese es el log del vaciado del global");
-  return async (dispatch) => {
-    try {
-      return dispatch({
-        type: CLEAR_VENTAS,
-        payload: "",
-      });
-    } catch (error) {
-      Swal.fire({
-        title: `${error}`,
-        text: "Error al limpiar: Clear",
-        icon: 'warning',
-        confirmButtonText: 'Aceptar'
-      });
-    }
-  };
-};
-
-const updateProductQuantity = (id, cantidad) => {
-  return {
-    type: UPDATE_PRODUCT_QUANTITY,
-    payload: { id, cantidad },
-  };
-};
-
 const getSomePublish = (idPeople) => {
   console.log(idPeople);
   
@@ -231,39 +150,13 @@ const getSomePublish = (idPeople) => {
   };
 };
 
-const allPeople = (query) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.get(`${REACT_APP_API_URL}/people?typeOfPerson=customer&typeOfPerson=provider&state=Inactive&state=Active&state=Deleted&state=Unverified${query}&pageSize=100`);
-      return dispatch({
-        type: GET_PEOPLE,
-        payload: response.data.people,
-      });
-    } catch (error) {
-      Swal.fire({
-        title: `${error}`,
-        text: "Error al obtener allPeople",
-        icon: 'warning',
-        confirmButtonText: 'Aceptar'
-      });
-    }
-  };
-};
-
   export {
     getSomePublish,
     getAllPublish,
-    allPeople,
-    allProduct,
+    getAllCarrer,
     getAllCompanies,
     logOutUser,
     getFilteredPublish,
-    getUser,
-    clear,
-    addProductToCart,
-    clearventas,
-    removeProductFromCart,
-    postVenta,
-    updateProductQuantity
+    getUser
   };
   

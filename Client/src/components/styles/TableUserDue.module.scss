@@ -13,7 +13,7 @@
 
     .tableWrapper {
         width: 100%;
-        min-height: 70dvh;
+        max-height: 400px;
         overflow: auto;
     }
 
@@ -45,16 +45,13 @@
                 height: 50px;
 
                 .firstTh {
-                    padding: 20px;
-
+                    padding-left: 40px;
                 }
 
 
 
                 .centerTd {
-                    text-align: center;
-                    padding: 20px;
-                    
+                    text-align: center
                 }
 
                 .lastTd {

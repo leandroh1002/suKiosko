@@ -10,8 +10,6 @@ const PATHROUTES = {
     PUBLISH:"/publish",
     PERFIL:"/perfil",
     DASHBOARD:"/dashboard",
-    CANASTO:"/Canasto",
-    CONTROLDEVENTAS:"/controldeventas",
 }
 
 export default PATHROUTES;
