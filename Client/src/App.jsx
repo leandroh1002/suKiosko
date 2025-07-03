@@ -10,6 +10,10 @@ import StoreItem from "./helpers/LocalStorage.js";
 import Nav from "./components/Nav.jsx";
 import Vender from "./components/Vender.jsx";
 import Gestionar from "./components/Gestionar.jsx";
+import FormAddCompanies from "./components/FormAddCompanies.jsx";
+import TableStock from "./components/TableStock/TableStock.jsx";
+import RevisionStock from "./components/RevisionStock.jsx";
+import ControlVentas from "./components/ControlVentas.jsx";
 // import Canasto from "./components/Canasto.jsx";
 
 const REACT_APP_API_URL = import.meta.env.VITE_BASE_URL;
@@ -50,6 +54,9 @@ function App() {
               <Route path={PATHROUTES.LANDING} element={<Home />}/>
               <Route path={PATHROUTES.VENDER} element={<Vender />} />
               <Route path={PATHROUTES.GESTIONAR} element={<Gestionar />} />
+              <Route path={PATHROUTES.AGREGAR_PRODUCTOS} element={<FormAddCompanies />} />
+              <Route path={PATHROUTES.REVISIONSTOCK} element={<RevisionStock />} />
+              <Route path={PATHROUTES.CONTROLDEVENTAS} element={<ControlVentas />} />
               {/* <Route path={PATHROUTES.CANASTO} element={<Canasto />} /> */}
               <Route path='*' element={<NotFound />} />
             </Routes>
