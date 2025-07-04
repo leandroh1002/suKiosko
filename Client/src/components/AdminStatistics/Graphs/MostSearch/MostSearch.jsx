@@ -9,9 +9,9 @@ function MostSearch() {
   useEffect(() => {
     const fetchEducation = async () => {
       try {
-        const response = await fetch(`${REACT_APP_API_URL}/ventas`);
+        const response = await fetch(`${REACT_APP_API_URL}/masvendidos?cantidad=10`);
         const data = await response.json();
-        const serviciosMasBuscados = data.data.serviciosMasBuscados;
+        const serviciosMasBuscados = data;
         setStatistics(serviciosMasBuscados);
        
       } 
@@ -26,13 +26,15 @@ function MostSearch() {
     };
     fetchEducation();
   }, []);
+  console.log(statistics);
+  
 
   return (
     <div className={style.statisticsContainer}>
       {statistics.slice(0, 6).map((item, index) => (
         <div key={index} className={style.statisticsItem}>
-          <p className={style.statisticsValue}>{item.cantidad}</p>
-          <p className={style.statisticsText}>{item.servicio}</p>
+          <p className={style.statisticsValue}>{item.total_vendido}</p>
+          <p className={style.statisticsText}>{item.Producto.nombre}</p>
         </div>
       ))}
     </div>
