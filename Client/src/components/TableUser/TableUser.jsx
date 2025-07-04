@@ -33,7 +33,7 @@ function TableUser(props) {
           <thead>
             <tr>
               <th className={styles.firstTh}>#</th>
-              <th>Código</th>
+              <th className={styles.centerTd}>Código</th>
               <th className={styles.centerTd}>Marca</th>
               <th className={styles.centerTd}>Stock</th>
               <th className={styles.centerTd}>Cantidad</th>
