@@ -48,6 +48,11 @@ function TableStock(props) {
     });
   };
 
+  const productosFiltrados = props.filtroActivo
+  ? productos.filter(p => parseFloat(p.stock) < 5)
+  : productos;
+
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.tableWrapper}>
@@ -68,7 +73,7 @@ function TableStock(props) {
             </tr>
           </thead>
           <tbody>
-          {productos && productos.map((producto) => {
+          {productosFiltrados && productosFiltrados.map((producto) => {
             // console.log(producto);
             const cantidad = cantidades[producto.id] || 0; // Obtiene la cantidad ingresada o 0 por defecto
             const total = cantidad * producto.precio_unitario; // Calcula el total dinámicamente
@@ -76,9 +81,9 @@ function TableStock(props) {
           return (
               <tr key={producto.id}>
                 <td className={styles.centerTd}>{producto.nombre}</td>
-                <td className={styles.centerTd}>marca</td>
-                <td className={styles.centerTd}>{producto.descripcion}</td>
-                <td className={styles.centerTd}>Vencimiento</td>
+                <td className={styles.centerTd}>{producto.Rubro ? producto.Rubro.nombre : 'N/A'}</td>
+                <td className={styles.centerTd}>{producto.marca}</td>
+                <td className={styles.centerTd}>{producto.fecha_de_vencimiento}</td>
                 <td className={styles.centerTd}>{producto.codigo_barra}</td>
                 <td className={styles.centerTd}>{producto.stock}</td>
                 <td className={styles.centerTd}>${producto.precio_compra}</td>
