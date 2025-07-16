@@ -14,18 +14,22 @@ exports.crearVenta = async (data) => {
       if (producto.stock < item.cantidad) {
         throw new Error(`Stock insuficiente para el producto "${producto.nombre}"`);
       }
+      // Asegurarse de que precio_unitario esté disponible para cálculos posteriores
+      item.precio_unitario = producto.precio_compra;
     }
 
     // Calcular total
-    const total = items.reduce((acc, item) => acc + item.precio_unitario * item.cantidad, 0);
-    const total_compra = items.reduce((acc, item) => acc + item.precio_compra * item.cantidad, 0);
+    const total = items.reduce((acc, item) => acc + item.redondeo * item.cantidad, 0);
+    const total_compra = items.reduce((acc, item) => acc + item.precio_unitario * item.cantidad, 0);
     const ganancia_total = total - total_compra;
+    const recompra = total - ganancia_total;
 
     // Crear la venta
     const nuevaVenta = await Venta.create({
       fecha,
       medio_pago,
       ganancia_total,
+      recompra,
       total,
       empleado_id,
       cliente_id,
@@ -38,11 +42,11 @@ exports.crearVenta = async (data) => {
         venta_id: nuevaVenta.id,
         producto_id: item.producto_id,
         cantidad: item.cantidad,
-        precio_unitario: item.precio_unitario,
-        precio_compra: item.precio_compra,
-        subtotal_compra: item.cantidad * item.precio_compra,
-        subtotal: item.cantidad * item.precio_unitario,
-        ganancia_producto: item.cantidad * item.precio_unitario - item.cantidad * item.precio_compra,
+        redondeo: item.redondeo,
+        precio_compra: item.precio_unitario,
+        subtotal_compra: item.cantidad * item.precio_unitario,
+        subtotal: item.cantidad * item.redondeo,
+        ganancia_producto: item.cantidad * item.redondeo - item.cantidad * item.precio_unitario,
       }, { transaction: t });
 
       // Actualizar el stock del producto
