@@ -10,7 +10,7 @@ const getVentasService = async () => {
           include: [
             {
               model: Producto,
-              attributes: ['id', 'nombre', 'precio_unitario'], // Selecciona solo los campos necesarios
+              attributes: ['id', 'nombre', 'redondeo'], // Selecciona solo los campos necesarios
             },
           ],
         },
