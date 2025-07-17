@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    precio_unitario: {
+    redondeo: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
@@ -21,7 +21,7 @@ module.exports = (sequelize) => {
     },
     stock: {
       type: DataTypes.DECIMAL(10, 2), // Cambiado a DECIMAL según tu especificación
-      allowNull: false,
+      allowNull: true,
     },
     unidad_medida_id: {
       type: DataTypes.INTEGER,
@@ -41,11 +41,15 @@ module.exports = (sequelize) => {
     },
     codigo_barra: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     descripcion: {
       type: DataTypes.TEXT,
       allowNull: true,
+    },
+    vencimiento: {
+      type: DataTypes.DATEONLY, // Usamos DATEONLY para no guardar la hora
+      allowNull: true, // O false si es un campo obligatorio
     },
     created_at: {
       type: DataTypes.DATE,
