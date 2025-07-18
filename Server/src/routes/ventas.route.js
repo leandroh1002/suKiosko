@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 //controllers
+const { getMasVendidosController } = require('../controllers/ventas/MasVendidos/getMasVendidos.Controllers');
 const { getVentasController } = require('../controllers/ventas/getVentas.Controllers');
 const { postVentasController } = require('../controllers/ventas/postVentas.Controllers');
 const { putVentasController } = require('../controllers/ventas/putVentas.Controllers');
@@ -10,6 +11,7 @@ const { deleteVentasController } = require('../controllers/ventas/deleteVentas.C
 const ventasRouter = Router();
 
 // Routes
+ventasRouter.get('/masvendidos', getMasVendidosController);
 ventasRouter.get('/ventas', getVentasController);
 /**
  * @swagger
