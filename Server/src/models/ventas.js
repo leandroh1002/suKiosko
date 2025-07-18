@@ -19,6 +19,10 @@ module.exports = (sequelize) => {sequelize.define('Venta', {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },
+  recompra: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+  },
   total: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
