@@ -28,7 +28,7 @@ sequelize.define('DetalleVenta', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  precio_unitario: {
+  redondeo: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },
