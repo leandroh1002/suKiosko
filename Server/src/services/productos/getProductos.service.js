@@ -1,4 +1,4 @@
-const { Producto, UnidadMedida } = require("../../db.js"); // Asegúrate de que la ruta sea correcta
+const { Producto, UnidadMedida, Rubro } = require("../../db.js"); // Asegúrate de que la ruta sea correcta
 const { Op } = require("sequelize"); // Importa operadores de Sequelize
 
 const getProductosService = async (filters) => {
@@ -16,12 +16,16 @@ const getProductosService = async (filters) => {
     }
 
     const products = await Producto.findAll({
-      attributes: ['id', 'nombre', 'precio_unitario', 'descripcion', 'codigo_barra', 'stock', 'precio_compra'], // Selecciona solo los campos necesarios
+      attributes: ['id', 'nombre', 'redondeo', 'descripcion', 'codigo_barra', 'stock', 'precio_compra', 'vencimiento'], // Selecciona solo los campos necesarios
       where: whereClause, // Aplica los filtros dinámicos
       include: [
         {
           model: UnidadMedida, // Incluye la relación con UnidadMedida
           attributes: ['id', 'nombre', 'simbolo'], // Selecciona los campos necesarios de UnidadMedida
+        },
+        {
+          model: Rubro, // Incluye la relación con Rubro
+          attributes: ['nombre'], // Selecciona solo el nombre del rubro
         },
       ],
     });
