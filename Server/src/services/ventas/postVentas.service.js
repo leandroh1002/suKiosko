@@ -17,6 +17,7 @@ exports.crearVenta = async (data) => {
       // Asegurarse de que precio_unitario esté disponible para cálculos posteriores
       item.precio_unitario = producto.precio_compra;
     }
+console.log("items", items);
 
     // Calcular total
     const total = items.reduce((acc, item) => acc + item.redondeo * item.cantidad, 0);
@@ -34,7 +35,7 @@ exports.crearVenta = async (data) => {
       empleado_id,
       cliente_id,
     }, { transaction: t });
-// console.log(items, "items desde el servicio");
+console.log(items, "items desde el servicio");
 
     // Crear los detalles de la venta
     for (const item of items) {
