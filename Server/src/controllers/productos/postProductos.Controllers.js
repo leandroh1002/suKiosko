@@ -9,18 +9,32 @@ const postProductosController = async (req, res) => {
       return res.status(400).json({ error: 'Se esperaba un array de productos' });
     }
 
-    // Validar cada producto en el array
-    for (const producto of data) {
-      if (!producto.nombre || !producto.precio_compra) {
-        console.log('Producto inválido:', producto);
-        return res.status(400).json({ error: 'El nombre y el precio son obligatorios para cada producto' });
-      }
-    }
-
-    // Procesar todos los productos
+    // Procesar y transformar todos los productos
     const newProductos = [];
     for (const producto of data) {
-      const newProducto = await postProductosService(producto);
+      // Mapear los campos del JSON a los campos del modelo de la base de datos
+      const transformedProducto = {
+        nombre: producto.nombre,
+        descripcion: producto.descripcion,
+        codigo_barra: producto.codigo_barra,
+        stock: producto.stock,
+        precio_compra: producto.precio_unitario || 0.00, // Usar precio_unitario o default
+        redondeo: producto.Redondeo,
+        vencimiento: producto.Vencimiento ? producto.Vencimiento.split('/').reverse().join('-') : '2050-01-01', // Convertir DD/MM/YYYY a YYYY-MM-DD
+        unidad_medida_id: producto.UnidadMedida,
+        rubro_id: producto.Rubro,
+      };
+
+      // Validar que los campos requeridos existan después de la transformación
+      if (!transformedProducto.nombre || !transformedProducto.redondeo || !transformedProducto.unidad_medida_id || !transformedProducto.rubro_id) {
+        console.log('Producto inválido después de transformar:', transformedProducto);
+        return res.status(400).json({ 
+          error: 'Faltan campos obligatorios. Asegúrese de que nombre, Redondeo, UnidadMedida y Rubro estén presentes en cada producto.',
+          producto_fallido: transformedProducto 
+        });
+      }
+      
+      const newProducto = await postProductosService(transformedProducto);
       newProductos.push(newProducto);
     }
 
