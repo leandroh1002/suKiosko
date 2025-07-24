@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getVentas } from '../redux/actions';
 import { getGastos, addGasto } from '../redux/actions/gastos.actions';
-import PieChart from './AdminStatistics/Graphs/Chart';
+import PieChart from './AdminStatistics/Graphs/Chart.jsx';
 import PATHROUTES from '../helpers/PathRoutes.helper';
 import { Link } from 'react-router-dom';
 
