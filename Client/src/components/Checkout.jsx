@@ -23,7 +23,8 @@ export default function Checkout({ totalGeneral = 0 }) {
         producto_id: prod.id,
         cantidad: prod.cantidad,
         precio_unitario: prod.precio_unitario,
-        precio_compra: prod.precio_compra
+        precio_compra: prod.precio_compra,
+        redondeo: prod.redondeo
       }))
     };
     dispatch(postVenta(payload));
