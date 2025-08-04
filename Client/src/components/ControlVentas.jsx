@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 function ControlVentas() {
     const dispatch = useDispatch();
     const ventas = useSelector(state => state.ventas);
+    
     const gastos = useSelector(state => state.gastos);
 
     const [nuevoGasto, setNuevoGasto] = useState({
@@ -38,10 +39,29 @@ function ControlVentas() {
             tipo: 'proveedores'
         });
     }
-
-    const totalRecompra = ventas ? ventas.reduce((acc, venta) => acc + parseFloat(venta.recompra || 0), 0) : 0;
-    const gananciaBruta = ventas ? ventas.reduce((acc, venta) => acc + parseFloat(venta.ganancia_total || 0), 0) : 0;
+    // console.log(ventas); 
+    // console.log(ventas.ganancia_total);
+    // console.log(ventas.recompra);
+    
+    const totalRecompra = ventas
+    ? ventas.reduce((acc, venta) => {
+        const recompraValida = parseFloat(venta.recompra) || 0;
+        //console.log('Procesando recompra:', venta.recompra, '->', recompraValida);
+        return acc + recompraValida;
+      }, 0)
+    : 0;
+    //console.log(totalRecompra);
+    // const gananciaBruta = ventas ? ventas.reduce((acc, venta) => acc + parseFloat(venta.ganancia_total || 0), 0) : 0;
+    const gananciaBruta = ventas
+    ? ventas.reduce((acc, venta) => {
+        const gananciaValida = parseFloat(venta.ganancia_total) || 0;
+        //console.log('Procesando recompra:', venta.ganancia_total, '->', gananciaValida);
+        return acc + gananciaValida;
+      }, 0)
+    : 0;
+    //console.log(gananciaBruta);
     const totalGastos = gastos ? gastos.reduce((acc, gasto) => acc + parseFloat(gasto.monto), 0) : 0;
+    //console.log(totalGastos);
     const gananciaNeta = gananciaBruta - totalGastos;
 
     const datosGrafico = [];
