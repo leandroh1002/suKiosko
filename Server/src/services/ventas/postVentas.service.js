@@ -20,7 +20,7 @@ exports.crearVenta = async (data) => {
 console.log("items", items);
 
     // Calcular total
-    const total = items.reduce((acc, item) => acc + item.precio_venta * item.cantidad, 0);
+    const total = items.reduce((acc, item) => acc + item.redondeo * item.cantidad, 0);
     const total_compra = items.reduce((acc, item) => acc + item.precio_unitario * item.cantidad, 0);
     const ganancia_total = total - total_compra;
     const recompra = total - ganancia_total;
