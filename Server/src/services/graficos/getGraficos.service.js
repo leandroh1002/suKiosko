@@ -8,6 +8,8 @@ const getGraficosService = async () => {
 
     // Ganancias totales: Suma de las ganancias de todas las ventas
     const gananciasTotales = await Venta.sum('total');
+    // console.log(gananciasTotales);
+    
 
     // Ventas totales: Cantidad de ventas realizadas
     const ventasTotales = await Venta.count();
