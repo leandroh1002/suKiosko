@@ -9,7 +9,7 @@ function FormAddProducts() {
 
   const [productData, setProductData] = useState({
     nombre: '',
-    precio_unitario: '',
+    redondeo: '',
     precio_compra: '',
     stock: '',
     rubro_id: '',
@@ -53,7 +53,7 @@ function FormAddProducts() {
       // Convertir valores numéricos a tipo Number
       const dataToSend = {
         ...productData,
-        precio_unitario: parseFloat(productData.precio_unitario),
+        redondeo: parseFloat(productData.redondeo),
         precio_compra: parseFloat(productData.precio_compra),
         stock: parseFloat(productData.stock),
         rubro_id: parseInt(productData.rubro_id),
@@ -65,7 +65,7 @@ function FormAddProducts() {
       // Opcional: Limpiar el formulario después de un envío exitoso
       setProductData({
         nombre: '',
-        precio_unitario: '',
+        redondeo: '',
         precio_compra: '',
         stock: '',
         rubro_id: '',
@@ -102,15 +102,15 @@ function FormAddProducts() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="precio_unitario">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="redondeo">
               Precio Unitario:
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="precio_unitario"
+              id="redondeo"
               type="number"
-              name="precio_unitario"
-              value={productData.precio_unitario}
+              name="redondeo"
+              value={productData.redondeo}
               onChange={handleChange}
               step="0.01"
               required
@@ -250,6 +250,7 @@ function FormAddProducts() {
         </div>
 
         <div className="flex items-center justify-between">
+          <Link to={PATHROUTES.GESTIONAR}><button className='bg-[#A64208] m-8 text-white font-normal p-2 rounded-lg cursor-pointer px-5 py-2 hover:bg-[#b45d2b] transition duration-75 transform hover:scale-105 active:bg-[#F2B138] active:scale-90'>Volver</button></Link>
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
@@ -257,7 +258,6 @@ function FormAddProducts() {
             Agregar Producto
           </button>
           
-          <Link to={PATHROUTES.GESTIONAR}><button className='bg-[#A64208] m-8 text-white font-normal p-2 rounded-lg cursor-pointer px-5 py-2 hover:bg-[#b45d2b] transition duration-75 transform hover:scale-105 active:bg-[#F2B138] active:scale-90'>Volver</button></Link>
 
         </div>
       </form>
