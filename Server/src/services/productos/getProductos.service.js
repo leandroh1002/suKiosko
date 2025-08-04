@@ -21,7 +21,8 @@ const getProductosService = async (filters) => {
       include: [
         {
           model: UnidadMedida, // Incluye la relación con UnidadMedida
-          attributes: ['id', 'nombre', 'simbolo'], // Selecciona los campos necesarios de UnidadMedida
+          as: 'unidadMedida', // Define el alias para la relación
+          attributes: ['id', 'nombre', 'simbolo', 'factor_conversion'], // Selecciona los campos necesarios de UnidadMedida
         },
         {
           model: Rubro, // Incluye la relación con Rubro
