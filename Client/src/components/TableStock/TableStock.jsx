@@ -17,20 +17,18 @@ function TableStock(props) {
       try {
         const response = await axios.get(`${REACT_APP_API_URL}/productos`);
         setProductos(response.data); // Guarda los productos en el estado
+        if (props.onDataFetched) {
+          props.onDataFetched(response.data); // Envía los datos al componente padre
+        }
       } catch (error) {
         console.error('Error al obtener los productos:', error);
       }
     };
 
     fetchProductos(); // Llama a la función para obtener los productos
-  }, []); // Solo se ejecuta una vez al montar el componente
-
-  console.log(productos, "productos desde TableStock");
-    
-
-  
+  }, [props.onDataFetched]); // Se ejecuta una vez y cuando onDataFetched cambie
+ 
   // const { productos, searchInput, onMailButtonClick, handleShowForm } = props
-  console.log("productos desde TableStock", productos);
   
   const REACT_APP_API_URL = import.meta.env.VITE_BASE_URL;
   const [cantidades, setCantidades] = useState({}); // Estado para manejar las cantidades
@@ -76,18 +74,18 @@ function TableStock(props) {
           {productosFiltrados && productosFiltrados.map((producto) => {
             // console.log(producto);
             const cantidad = cantidades[producto.id] || 0; // Obtiene la cantidad ingresada o 0 por defecto
-            const total = cantidad * producto.precio_unitario; // Calcula el total dinámicamente
+            const total = cantidad * producto.redondeo; // Calcula el total dinámicamente
             
           return (
               <tr key={producto.id}>
-                <td className={styles.centerTd}>{producto.nombre}</td>
                 <td className={styles.centerTd}>{producto.Rubro ? producto.Rubro.nombre : 'N/A'}</td>
-                <td className={styles.centerTd}>{producto.marca}</td>
+                <td className={styles.centerTd}>{producto.nombre}asd</td>
+                <td className={styles.centerTd}>{producto.nombre}</td>
                 <td className={styles.centerTd}>{producto.fecha_de_vencimiento}</td>
                 <td className={styles.centerTd}>{producto.codigo_barra}</td>
                 <td className={styles.centerTd}>{producto.stock}</td>
                 <td className={styles.centerTd}>${producto.precio_compra}</td>
-                <td className={styles.centerTd}>${producto.precio_unitario}</td>
+                <td className={styles.centerTd}>${producto.redondeo}</td>
               </tr>
             );
           })}
