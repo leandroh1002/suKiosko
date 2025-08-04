@@ -195,15 +195,22 @@ function PieChartComponent() {
       try {
         const response = await fetch(`${REACT_APP_API_URL}/ventas`);
         const data = await response.json();
-
+        console.log(data);
+        
         // Filtrar ventas no anuladas y parsear números
         const validSales = data.filter((venta) => !venta.anulada);
         let totalGanancia = 0;
         let totalVentas = 0;
 
         validSales.forEach((venta) => {
-          totalGanancia += parseFloat(venta.ganancia_total || 0);
-          totalVentas += parseFloat(venta.total || 0);
+          console.log(venta.ganancia_total, "ganancia total de cada venta");
+        
+          const ganancia = parseFloat(venta.ganancia_total);
+          const total = parseFloat(venta.total);
+        
+          // Verifica si los valores son números válidos antes de sumarlos
+          totalGanancia += !isNaN(ganancia) ? ganancia : 0;
+          totalVentas += !isNaN(total) ? total : 0;
         });
 
         const chartData = [
