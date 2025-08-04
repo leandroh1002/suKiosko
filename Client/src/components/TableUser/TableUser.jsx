@@ -19,6 +19,7 @@ function TableUser(props) {
       alert(`La cantidad no puede ser mayor al stock disponible (${producto.stock}).`);
       return; // No actualiza la cantidad si supera el stock
     }
+  console.log(productos);
   
     setCantidades({
       ...cantidades,
@@ -34,12 +35,13 @@ function TableUser(props) {
             <tr>
               <th className={styles.firstTh}>#</th>
               <th className={styles.centerTd}>Código</th>
-              <th className={styles.centerTd}>Marca</th>
+              <th className={styles.centerTd}>Nombre</th>
+              <th className={styles.centerTd}>descripcion</th>
               <th className={styles.centerTd}>Stock</th>
               <th className={styles.centerTd}>Cantidad</th>
-              <th className={styles.centerTd}>Precio Unitario</th>
-              <th className={styles.centerTd}>descripcion</th>
-              <th className={styles.centerTd}>Importe</th>
+              <th className={styles.centerTd}>---</th>
+              <th className={styles.centerTd}>Precio de Venta</th>
+              <th className={styles.centerTd}>SubTotal</th>
               <th className={styles.centerTd}>----</th>
               <th></th>
               <th></th>
@@ -50,13 +52,14 @@ function TableUser(props) {
           {productos && productos.map((producto) => {
             // console.log(producto);
             const cantidad = cantidades[producto.id] || 0; // Obtiene la cantidad ingresada o 0 por defecto
-            const total = cantidad * producto.precio_unitario; // Calcula el total dinámicamente
+            const total = cantidad * producto.redondeo; // Calcula el total dinámicamente
             
           return (
             <tr key={producto.id}>
               <td className={styles.centerTd}>{producto.id}</td>
               <td className={styles.centerTd}>{producto.codigo_barra}</td>
               <td className={styles.centerTd}>{producto.nombre}</td>
+              <td className={styles.centerTd}>{producto.descripcion}</td>
               <td className={styles.centerTd}>{producto.stock}</td>
               <td >
                 <input className={styles.centerTd}
@@ -66,8 +69,8 @@ function TableUser(props) {
                   onChange={(e) => handleCantidadChange(producto.id, parseFloat(e.target.value) || 0)} // Actualiza la cantidad
                 />
               </td>
-              <td className={styles.centerTd}>${parseFloat(producto.precio_unitario).toFixed(2)}</td>
-              <td className={styles.centerTd}>{producto.descripcion}</td>
+              <td className={styles.centerTd}><button>{producto.unidadMedida.simbolo}</button></td>
+              <td className={styles.centerTd}>${parseFloat(producto.redondeo).toFixed(2)}</td>
               <td className={styles.centerTd}>${total.toFixed(2)}</td>
               <td className={styles.mail}>
                 <button
