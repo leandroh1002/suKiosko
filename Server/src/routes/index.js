@@ -7,6 +7,7 @@ const rubros = require("./rubros.route.js");
 const graficos = require("./graficos.route.js");
 const gastos = require("./gastos.route.js");
 const unidades = require("./unidades.route.js");
+const login = require("./login.route.js");
 
 router.use(gastos);
 router.use(graficos);
@@ -14,5 +15,6 @@ router.use(productos);
 router.use(ventas);
 router.use(rubros);
 router.use(unidades);
+router.use(login);
 
 module.exports = router;
