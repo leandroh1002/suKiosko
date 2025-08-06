@@ -5,6 +5,7 @@ import { clearventas, postVenta } from '../redux/actions';
 export default function Checkout({ totalGeneral = 0 }) {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart); // Array de productos
+  const empleado = useSelector(state => state.empleado_login); // Array de productos
   const [mostrarModal, setMostrarModal] = useState(false);
   const [medioPago, setMedioPago] = useState(null);
 
@@ -12,11 +13,13 @@ export default function Checkout({ totalGeneral = 0 }) {
     setMostrarModal(true);
   };
 
+  //console.log(empleado);
+  
   const handleConfirmarPago = () => {
     const payload = {
       fecha: new Date().toISOString(),
       medio_pago: medioPago,
-      empleado_id: 1, // puedes poner un valor fijo temporal o sacarlo de auth
+      empleado_id: empleado.id, // puedes poner un valor fijo temporal o sacarlo de auth
       cliente_id: null,
       subtotal: totalGeneral,
       items: cart.map(prod => ({
