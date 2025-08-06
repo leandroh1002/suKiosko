@@ -1,4 +1,4 @@
-import { ACCESS_BACK_SAVE_DATA,CLEAR_VENTAS, VENTA_ERROR, VENTA_EXITOSA ,REMOVE_PRODUCT_FROM_CART , GET_PRODUCTS, GET_CARRER, ADD_PRODUCT_TO_CART, GET_COMPANIES, GET_PUBLISH, GET_USERLOGUED, USERLOGOUT, FILTERED_PUBLISH, CLEAR_FILTERED_PUBLISH, CLEAR_ALL_PUBLISH, SOME_PUBLISH, UPDATE_PRODUCT_QUANTITY, GET_VENTAS} from "../actions/action-types";
+import { EMPLEADO_LOGIN_SUCCESS, ACCESS_BACK_SAVE_DATA,CLEAR_VENTAS, VENTA_ERROR, VENTA_EXITOSA ,REMOVE_PRODUCT_FROM_CART , GET_PRODUCTS, GET_CARRER, ADD_PRODUCT_TO_CART, GET_COMPANIES, GET_PUBLISH, GET_USERLOGUED, USERLOGOUT, FILTERED_PUBLISH, CLEAR_FILTERED_PUBLISH, CLEAR_ALL_PUBLISH, SOME_PUBLISH, UPDATE_PRODUCT_QUANTITY, GET_VENTAS} from "../actions/action-types";
 import { GET_GASTOS, ADD_GASTO } from "../actions/gastos.actions";
 
 const initialState = {
@@ -10,7 +10,9 @@ const initialState = {
     productForAdmin: [],
     UserLogued: [],//hay que ver porque capaz que puedo usar el token para los cambios
     cart: [],
-    gastos: []
+    gastos: [],
+    ventas: [],
+    empleado_login: null,
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -76,24 +78,25 @@ const rootReducer = (state = initialState, { type, payload }) => {
             return {...state,
             FilteredPublish: payload,
         }
-        case UPDATE_PRODUCT_QUANTITY: {
-          const updatedCart = state.cart.map((producto) => {
-            if (producto.id === payload.id) {
-              const nuevaCantidad = payload.cantidad;
-              const nuevoTotal = nuevaCantidad * parseFloat(producto.redondeo);
-              return {
-                ...producto,
-                cantidad: nuevaCantidad,
-                total: nuevoTotal,
-              };
-            }
-            return producto;
-          });
-          return {
+        case UPDATE_PRODUCT_QUANTITY:
+      return {
+        ...state,
+        cart: state.cart.map(product =>
+          product.id === payload.productId
+            ? { ...product, cantidad: payload.cantidad }
+            : product
+        ),
+      };
+
+    case 'UPDATE_CART_ITEM':
+        return {
             ...state,
-            cart: updatedCart,
-          };
-        }
+            cart: state.cart.map(product =>
+                product.id === payload.productId
+                    ? { ...product, ...payload.updatedData }
+                    : product
+            ),
+        };
         case SOME_PUBLISH:
             return {...state,
             somePublish: payload,
@@ -148,6 +151,11 @@ const rootReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 gastos: [...state.gastos, payload]
             }
+        case EMPLEADO_LOGIN_SUCCESS:
+            return {
+                ...state,
+                empleado_login: payload,
+            };
         default:
             return {
                 ...state,
