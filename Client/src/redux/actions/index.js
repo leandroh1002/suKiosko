@@ -1,7 +1,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-import {
+import { 
   SOME_PUBLISH,
   GET_CARRER,
   GET_COMPANIES,
@@ -19,7 +19,9 @@ import {
   VENTA_ERROR,
   UPDATE_PRODUCT_QUANTITY,
   GET_VENTAS,
+  EMPLEADO_LOGIN_SUCCESS
 } from "../actions/action-types";
+
 
 const REACT_APP_API_URL = import.meta.env.VITE_BASE_URL;
 
@@ -43,6 +45,12 @@ const getAllPublish = () => {
           confirmButtonText: 'Aceptar'
         });
       }
+    };
+  };
+const empleadoLoginSuccess = (empleado) => {
+    return {
+      type: EMPLEADO_LOGIN_SUCCESS,
+      payload: empleado,
     };
   };
 const getFilteredPublish = (idCarrer) => {
@@ -203,12 +211,15 @@ const clearventas = () => {
   };
 };
 
-const updateProductQuantity = (id, cantidad) => {
-  return {
-    type: UPDATE_PRODUCT_QUANTITY,
-    payload: { id, cantidad },
-  };
-};
+export const updateProductQuantity = (productId, cantidad) => ({
+  type: UPDATE_PRODUCT_QUANTITY,
+  payload: { productId, cantidad },
+});
+
+export const updateCartItem = (productId, updatedData) => ({
+    type: 'UPDATE_CART_ITEM',
+    payload: { productId, updatedData },
+});
 
 const getSomePublish = (idPeople) => {
   console.log(idPeople);
@@ -236,6 +247,7 @@ const getVentas = () => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${REACT_APP_API_URL}/ventas`);
+      console.log(response.data);
       return dispatch({
         type: GET_VENTAS,
         payload: response.data,
@@ -284,7 +296,7 @@ const allPeople = (query) => {
     clearventas,
     removeProductFromCart,
     postVenta,
-    updateProductQuantity,
+    empleadoLoginSuccess,
     getVentas
   };
   
