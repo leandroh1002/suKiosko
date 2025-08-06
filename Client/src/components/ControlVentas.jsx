@@ -6,6 +6,8 @@ import PieChart from './AdminStatistics/Graphs/Chart.jsx';
 import PATHROUTES from '../helpers/PathRoutes.helper';
 import { Link } from 'react-router-dom';
 
+import ListadoGastos from './ListadoGastos/ListadoGastos';
+
 function ControlVentas() {
     const dispatch = useDispatch();
     const ventas = useSelector(state => state.ventas);
@@ -119,13 +121,15 @@ function ControlVentas() {
                         </div>
                     </div>
                 </div>
-                <div className='mt-8 h-[400px]'>
-                    <h2 className='text-xl font-bold mb-2'>Distribución de Ingresos y Gastos</h2>
-                    <div className="h-full w-full">
-                        {datosGrafico.length > 0 ? <PieChart data={datosGrafico} /> : <p>No hay datos de gastos para mostrar.</p>}
+                <div className='flex justify-around'>
+                    <div className='mt-8 h-[400px] w-[400px]'>
+                        <h2 className='text-xl font-bold mb-2'>Distribución de Ingresos y Gastos</h2>
+                        <div className="h-full w-full">
+                            {datosGrafico.length > 0 ? <PieChart data={datosGrafico} /> : <p>No hay datos de gastos para mostrar.</p>}
+                        </div>
                     </div>
+                    <ListadoGastos />
                 </div>
-               
             </main>
             <Link to={PATHROUTES.GESTIONAR}>
             <footer className='bg-gray-800 text-white p-4 text-center'>
