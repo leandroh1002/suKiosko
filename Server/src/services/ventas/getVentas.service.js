@@ -1,4 +1,4 @@
-const { Venta, DetalleVenta, Producto } = require('../../db.js');
+const { Venta, DetalleVenta, Producto, Empleado } = require('../../db.js');
 
 const getVentasService = async () => {
   try {
@@ -14,6 +14,10 @@ const getVentasService = async () => {
             },
           ],
         },
+        {
+            model: Empleado,
+            attributes: ['id', 'nombre'], // Selecciona solo los campos necesarios
+        }
       ],
     });
     return ventas;
