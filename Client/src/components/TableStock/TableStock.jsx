@@ -57,8 +57,8 @@ function TableStock(props) {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th className={styles.firstTh}>Producto</th>
-              <th className={styles.centerTd}>Marca</th>
+              <th className={styles.firstTh}>Rubro</th>
+              <th className={styles.centerTd}>Nombre</th>
               <th className={styles.centerTd}>descripcion</th>
               <th className={styles.centerTd}>Fecha de vencimiento</th>
               <th className={styles.centerTd}>Código</th>
@@ -79,11 +79,12 @@ function TableStock(props) {
           return (
               <tr key={producto.id}>
                 <td className={styles.centerTd}>{producto.Rubro ? producto.Rubro.nombre : 'N/A'}</td>
-                <td className={styles.centerTd}>{producto.nombre}asd</td>
                 <td className={styles.centerTd}>{producto.nombre}</td>
-                <td className={styles.centerTd}>{producto.fecha_de_vencimiento}</td>
-                <td className={styles.centerTd}>{producto.codigo_barra}</td>
-                <td className={styles.centerTd}>{producto.stock}</td>
+                <td className={styles.centerTd}>{producto.descripcion}</td>
+                <td className={styles.centerTd}>{producto.vencimiento}</td>
+                <td className={styles.centerTd}>
+                  {producto.codigo_barra ? producto.codigo_barra.padStart(13, '0') : 'N/A'}
+                </td>                <td className={styles.centerTd}>{producto.stock}</td>
                 <td className={styles.centerTd}>${producto.precio_compra}</td>
                 <td className={styles.centerTd}>${producto.redondeo}</td>
               </tr>
