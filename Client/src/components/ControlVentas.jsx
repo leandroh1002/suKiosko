@@ -133,7 +133,7 @@ function ControlVentas() {
             </main>
             <Link to={PATHROUTES.GESTIONAR}>
             <footer className='bg-gray-800 text-white p-4 text-center'>
-                <p>SuKiosko &copy; 2025</p>
+                <p>SuAlmacen &copy; 2025</p>
             </footer></Link>
         </div>
     )
