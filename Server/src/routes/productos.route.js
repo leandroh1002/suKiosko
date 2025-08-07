@@ -24,7 +24,7 @@ productoRouter.get('/productos', getProductosController);
  *       400:
  *         description: Error en la solicitud.
  */
-productoRouter.put('/productos', putProductosController);
+productoRouter.put('/productos/:id', putProductosController);
 /**
  * @swagger
  * /productos:
