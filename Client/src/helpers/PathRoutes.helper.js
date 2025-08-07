@@ -15,6 +15,8 @@ const PATHROUTES = {
     AGREGAR_PRODUCTOS:"/agregarproductos",
     REVISIONSTOCK:"/revisionstock",
     RUBROS:"/rubros",
+    LISTAVENTAS:"/listaventadiarias",
+    LOGIN:"/login",
 }
 
 export default PATHROUTES;
