@@ -72,8 +72,8 @@ Producto.hasMany(MovimientoStock, { foreignKey: 'producto_id' });//Un producto p
 MovimientoStock.belongsTo(Producto, { foreignKey: 'producto_id' });//Cada movimiento de stock está asociado a un producto
 
 // Productos y UnidadesMedida (Uno-a-Uno)
-UnidadMedida.hasOne(Producto, { foreignKey: 'unidad_medida_id' }); // Una unidad de medida puede estar asociada a un producto
-Producto.belongsTo(UnidadMedida, { foreignKey: 'unidad_medida_id' }); // Cada producto tiene una unidad de medida
+UnidadMedida.hasMany(Producto, { foreignKey: "unidad_medida_id", as: "productos" }); // Una unidad de medida puede estar asociada a muchos productos
+Producto.belongsTo(UnidadMedida, { foreignKey: "unidad_medida_id", as: "unidadMedida" }); // Cada producto tiene una unidad de medida
 
 Producto.hasMany(DetalleVenta, { foreignKey: 'producto_id' });
 DetalleVenta.belongsTo(Producto, { foreignKey: 'producto_id' });
