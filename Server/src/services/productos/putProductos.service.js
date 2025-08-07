@@ -9,8 +9,17 @@ const putProductosService = async (id, data) => {
       throw new Error('Producto no encontrado');
     }
 
-    // Actualiza el producto con los datos proporcionados
-    await producto.update(data);
+    // Objeto para almacenar los datos de actualización válidos
+    const updateData = {};
+    // Itera sobre los datos de entrada y filtra los valores no deseados
+    for (const key in data) {
+      if (data[key] !== null && data[key] !== undefined && data[key] !== '') {
+        updateData[key] = data[key];
+      }
+    }
+
+    // Actualiza el producto solo con los datos válidos
+    await producto.update(updateData);
 
     return producto; // Retorna el producto actualizado
   } catch (error) {
