@@ -1,7 +1,10 @@
 const { Router } = require('express');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 
 //controllers
 const { getProductosController } = require('../controllers/productos/getProductos.Controllers');
+const uploadProductosController = require('../controllers/productos/uploadProductos.controller');
 const { postProductosController } = require('../controllers/productos/postProductos.Controllers');
 const { putProductosController } = require('../controllers/productos/putProductos.Controllers');
 const { deleteProductosController } = require('../controllers/productos/deleteProductos.Controllers');
@@ -125,4 +128,7 @@ productoRouter.delete('/productos', deleteProductosController);
  */
 
 
+productoRouter.post('/productos/upload', upload.single('file'), uploadProductosController);
+
 module.exports = productoRouter;
+
