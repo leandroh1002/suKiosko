@@ -57,7 +57,7 @@ function TableUser(props) {
           return (
             <tr key={producto.id}>
               <td className={styles.centerTd}>{producto.id}</td>
-              <td className={styles.centerTd}>{producto.codigo_barra}</td>
+              <td className={styles.centerTd}>{producto.codigo_barra ? producto.codigo_barra.padStart(13, '0') : 'N/A'}</td>
               <td className={styles.centerTd}>{producto.nombre}</td>
               <td className={styles.centerTd}>{producto.descripcion}</td>
               <td className={styles.centerTd}>{producto.stock}</td>
