@@ -19,7 +19,8 @@ import {
   VENTA_ERROR,
   UPDATE_PRODUCT_QUANTITY,
   GET_VENTAS,
-  EMPLEADO_LOGIN_SUCCESS
+  EMPLEADO_LOGIN_SUCCESS,
+  UPDATE_PRODUCT
 } from "../actions/action-types";
 
 
@@ -282,6 +283,32 @@ const allPeople = (query) => {
   };
 };
 
+const updateProduct = (id, productData) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.put(`${REACT_APP_API_URL}/productos/${id}`, productData);
+      dispatch({
+        type: UPDATE_PRODUCT,
+        payload: response.data,
+      });
+      Swal.fire({
+        title: 'Producto actualizado',
+        text: 'El producto se ha actualizado correctamente.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo actualizar el producto.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+    }
+  };
+};
+
   export {
     getSomePublish,
     getAllPublish,
@@ -297,6 +324,7 @@ const allPeople = (query) => {
     removeProductFromCart,
     postVenta,
     empleadoLoginSuccess,
-    getVentas
+    getVentas,
+    updateProduct
   };
   
