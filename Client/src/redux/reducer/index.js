@@ -1,4 +1,4 @@
-import { EMPLEADO_LOGIN_SUCCESS, ACCESS_BACK_SAVE_DATA,CLEAR_VENTAS, VENTA_ERROR, VENTA_EXITOSA ,REMOVE_PRODUCT_FROM_CART , GET_PRODUCTS, GET_CARRER, ADD_PRODUCT_TO_CART, GET_COMPANIES, GET_PUBLISH, GET_USERLOGUED, USERLOGOUT, FILTERED_PUBLISH, CLEAR_FILTERED_PUBLISH, CLEAR_ALL_PUBLISH, SOME_PUBLISH, UPDATE_PRODUCT_QUANTITY, GET_VENTAS} from "../actions/action-types";
+import { EMPLEADO_LOGIN_SUCCESS, ACCESS_BACK_SAVE_DATA,CLEAR_VENTAS, VENTA_ERROR, VENTA_EXITOSA ,REMOVE_PRODUCT_FROM_CART , GET_PRODUCTS, GET_CARRER, ADD_PRODUCT_TO_CART, GET_COMPANIES, GET_PUBLISH, GET_USERLOGUED, USERLOGOUT, FILTERED_PUBLISH, CLEAR_FILTERED_PUBLISH, CLEAR_ALL_PUBLISH, SOME_PUBLISH, UPDATE_PRODUCT_QUANTITY, GET_VENTAS, UPDATE_PRODUCT} from "../actions/action-types";
 import { GET_GASTOS, ADD_GASTO } from "../actions/gastos.actions";
 
 const initialState = {
@@ -155,6 +155,13 @@ const rootReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 empleado_login: payload,
+            };
+        case UPDATE_PRODUCT:
+            return {
+                ...state,
+                productForAdmin: state.productForAdmin.map(product =>
+                    product.id === payload.id ? payload : product
+                ),
             };
         default:
             return {
