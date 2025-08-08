@@ -38,17 +38,22 @@ function RevisionStock() {
     <div className='flex flex-col min-h-screen bg-gray-100 p-4'>
       <h1 className='text-2xl font-bold text-center mb-4'>Revisión de Stock</h1>
       
-      <div className='flex justify-center mb-4'>
+      <div className='flex justify-between mb-4'>
         <button 
           onClick={() => setFiltroStockBajo(!filtroStockBajo)}
           className={`px-4 py-2 rounded text-white transition-colors ${filtroStockBajo ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'}`}>
           {filtroStockBajo ? 'Mostrar Todos los Productos' : 'Filtrar Stock Bajo (< 5)'}
         </button>
-        <button 
+        {/* <button 
           onClick={exportToJson}
           className='ml-4 px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600 transition-colors'>
           Exportar a JSON
-        </button>
+        </button> */}
+        <Link to={PATHROUTES.PRODUCTOS}>
+          <button className='ml-4 px-4 py-2 rounded bg-yellow-600 text-white hover:bg-yellow-700 transition-colors'>
+            ACTUALIZAR STOCK
+          </button>
+        </Link>
         <button 
           onClick={exportToXLSX}
           className='ml-4 px-4 py-2 rounded bg-purple-500 text-white hover:bg-purple-600 transition-colors'>
