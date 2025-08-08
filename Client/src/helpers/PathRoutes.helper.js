@@ -17,6 +17,7 @@ const PATHROUTES = {
     RUBROS:"/rubros",
     LISTAVENTAS:"/listaventadiarias",
     LOGIN:"/login",
+    PRODUCTOS: "/productos",
 }
 
 export default PATHROUTES;
