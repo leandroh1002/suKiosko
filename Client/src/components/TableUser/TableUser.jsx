@@ -39,7 +39,6 @@ function TableUser(props) {
               <th className={styles.centerTd}>descripcion</th>
               <th className={styles.centerTd}>Stock</th>
               <th className={styles.centerTd}>Cantidad</th>
-              <th className={styles.centerTd}>---</th>
               <th className={styles.centerTd}>Precio de Venta</th>
               <th className={styles.centerTd}>SubTotal</th>
               <th className={styles.centerTd}>----</th>
@@ -69,7 +68,6 @@ function TableUser(props) {
                   onChange={(e) => handleCantidadChange(producto.id, parseFloat(e.target.value) || 0)} // Actualiza la cantidad
                 />
               </td>
-              <td className={styles.centerTd}><button>{producto.unidadMedida.simbolo}</button></td>
               <td className={styles.centerTd}>${parseFloat(producto.redondeo).toFixed(2)}</td>
               <td className={styles.centerTd}>${total.toFixed(2)}</td>
               <td className={styles.mail}>
