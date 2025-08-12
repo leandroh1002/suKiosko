@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import TableStock from './TableStock/TableStock';
 import PATHROUTES from '../helpers/PathRoutes.helper';
 import { Link } from 'react-router-dom';
@@ -7,24 +7,35 @@ import * as XLSX from 'xlsx';
 function RevisionStock() {
   const [filtroStockBajo, setFiltroStockBajo] = useState(false);
   const [productosData, setProductosData] = useState([]);
+  const [productosPorVencer, setProductosPorVencer] = useState([]);
+  const [isVencimientoModalOpen, setIsVencimientoModalOpen] = useState(false);
 
   const handleDataFetched = useCallback((data) => {
     setProductosData(data);
   }, []);
 
-  const exportToJson = () => {
-    const filename = 'productos.json';
-    const jsonStr = JSON.stringify(productosData, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+  useEffect(() => {
+    if (productosData.length > 0) {
+      const EXPIRATION_THRESHOLD_DAYS = 15;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const nearExpiration = productosData.filter(p => {
+        if (!p.vencimiento) return false;
+        
+        const expirationDate = new Date(p.vencimiento);
+        const diffTime = expirationDate.getTime() - today.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        return diffDays >= 0 && diffDays <= EXPIRATION_THRESHOLD_DAYS;
+      });
+
+      if (nearExpiration.length > 0) {
+        setProductosPorVencer(nearExpiration);
+        setIsVencimientoModalOpen(true);
+      }
+    }
+  }, [productosData]);
 
   const exportToXLSX = () => {
     const filename = 'productos.xlsx';
@@ -44,11 +55,6 @@ function RevisionStock() {
           className={`px-4 py-2 rounded text-white transition-colors ${filtroStockBajo ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'}`}>
           {filtroStockBajo ? 'Mostrar Todos los Productos' : 'Filtrar Stock Bajo (< 5)'}
         </button>
-        {/* <button 
-          onClick={exportToJson}
-          className='ml-4 px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600 transition-colors'>
-          Exportar a JSON
-        </button> */}
         <Link to={PATHROUTES.PRODUCTOS}>
           <button className='ml-4 px-4 py-2 rounded bg-yellow-600 text-white hover:bg-yellow-700 transition-colors'>
             ACTUALIZAR STOCK
@@ -70,6 +76,30 @@ function RevisionStock() {
           Volver
         </Link>
       </footer>
+
+      {isVencimientoModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h2 className="text-xl font-bold mb-4 text-red-600">¡Atención! Productos Próximos a Vencer</h2>
+            <p className="mb-4">Los siguientes productos vencerán en los próximos 15 días:</p>
+            <ul className="list-disc list-inside mb-4 max-h-60 overflow-y-auto">
+              {productosPorVencer.map(p => (
+                <li key={p.id} className="mb-2">
+                  <span className="font-semibold">{p.nombre}</span> - Vence el: 
+                  <span className="font-bold text-red-500 ml-1">
+                    {new Date(p.vencimiento).toLocaleDateString('es-AR', { timeZone: 'UTC' })}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <button 
+              onClick={() => setIsVencimientoModalOpen(false)}
+              className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
