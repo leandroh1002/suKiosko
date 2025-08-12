@@ -45,3 +45,19 @@ h4 {font-size: 1.777rem; /* 28.48px */}
 h5 {font-size: 1.333rem; /* 21.28px */}
 
 small {font-size: 0.750rem; /* 12px */}
+
+/* FIX: Override Tailwind's transparent background for SweetAlert2 buttons */
+.swal2-confirm {
+  background-color: #3B82F6; /* A nice blue */
+  color: white;
+}
+
+.swal2-cancel {
+  background-color: #6B7280; /* A neutral gray */
+  color: white;
+}
+
+.swal2-deny {
+    background-color: #F59E0B; /* An amber/yellow */
+    color: white;
+}

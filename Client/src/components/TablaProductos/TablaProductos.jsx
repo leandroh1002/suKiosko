@@ -126,7 +126,7 @@ const TablaProductos = () => {
                 />
               </td>
               <td>
-                <button onClick={() => handleSaveChanges(product.id)}>
+                <button className='bg-[#3aa608] text-white font-normal mb-0 p-2 rounded-lg cursor-pointer px-5 py-2 hover:bg-[#699b52] transition duration-75 transform hover:scale-105 active:bg-[#9eed86] active:scale-90' onClick={() => handleSaveChanges(product.id)}>
                   Guardar Cambios
                 </button>
               </td>
