@@ -1,16 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addProductToCart } from '../redux/actions';
+import Swal from 'sweetalert2';
 
 const VentaFraccionadaModal = ({ onClose }) => {
+  const dispatch = useDispatch();
   const [productos, setProductos] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [cantidades, setCantidades] = useState({});
   const [montos, setMontos] = useState({});
 
   useEffect(() => {
-    // Asumo que tienes una instancia de axios configurada para hacer peticiones a tu backend
-    // de lo contrario, necesitaría la URL completa del backend.
     axios.get('/productos')
       .then(response => {
         setProductos(response.data);
@@ -38,7 +40,7 @@ const VentaFraccionadaModal = ({ onClose }) => {
     const precioVenta = parseFloat(producto.redondeo);
     if (precioVenta === 0) return;
 
-    const cantidadCalculada = (monto / precioVenta).toFixed(3); // Asumo 3 decimales para kg, etc.
+    const cantidadCalculada = (monto / precioVenta).toFixed(3);
 
     setMontos({ ...montos, [id]: monto });
     setCantidades({ ...cantidades, [id]: cantidadCalculada });
@@ -47,35 +49,35 @@ const VentaFraccionadaModal = ({ onClose }) => {
   const handleVenderClick = (id) => {
     const producto = productos.find(p => p.id === id);
     const cantidadVendida = parseFloat(cantidades[id] || 0);
+    const montoVendido = parseFloat(montos[id] || 0);
 
     if (!producto || isNaN(cantidadVendida) || cantidadVendida <= 0) {
-      alert("Por favor, ingrese una cantidad o monto válido.");
+      Swal.fire('Error', 'Por favor, ingrese una cantidad o monto válido.', 'error');
       return;
     }
 
-    const nuevoStock = parseFloat(producto.stock) - cantidadVendida;
-
-    if (nuevoStock < 0) {
-        alert("No hay suficiente stock para realizar esta venta.");
-        return;
+    if (parseFloat(producto.stock) < cantidadVendida) {
+      Swal.fire('Error', 'No hay suficiente stock para realizar esta venta.', 'error');
+      return;
     }
 
-    axios.put(`/productos/${id}`, { stock: nuevoStock.toFixed(3) })
-      .then(() => {
-        alert(`Venta realizada con éxito. Nuevo stock para ${producto.nombre}: ${nuevoStock.toFixed(3)}`);
-        // Actualizar el estado local para reflejar el cambio inmediatamente
-        const productosActualizados = productos.map(p => 
-          p.id === id ? { ...p, stock: nuevoStock.toFixed(3) } : p
-        );
-        setProductos(productosActualizados);
-        // Limpiar campos de ese producto
-        setCantidades({ ...cantidades, [id]: '' });
-        setMontos({ ...montos, [id]: '' });
-      })
-      .catch(error => {
-        console.error("Error al actualizar el stock:", error);
-        alert("Hubo un error al actualizar el stock. Por favor, intente de nuevo.");
-      });
+    const productoParaCarrito = {
+      ...producto,
+      precioVenta: montoVendido, // El precio de venta para el carrito es el monto calculado
+      precio_unitario: montoVendido // Aseguramos que el precio_unitario sea el correcto
+    };
+
+    dispatch(addProductToCart(productoParaCarrito, cantidadVendida));
+
+    Swal.fire({
+      title: '¡Agregado!',
+      text: `${producto.nombre} ha sido agregado al carrito.`,
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
+
+    onClose(); // Cierra el modal después de agregar al carrito
   };
 
 

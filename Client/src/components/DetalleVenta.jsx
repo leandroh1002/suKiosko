@@ -80,14 +80,15 @@ const ProductRow = ({ producto }) => {
             <button onClick={() => handleModeChange('monto')} className={mode === 'monto' ? styles.active : ''}>Monto</button>
             <button onClick={() => handleModeChange('unidad')} className={mode === 'unidad' ? styles.active : ''}>Unidad</button>
           </div>
-        )}
+      )}
         <input
-          className={styles.centerTd}
-          type="number"
-          value={value}
-          min="0"
-          onChange={handleValueChange}
+        className={styles.centerTd}
+        type="number"
+        value={value}
+        min="0"
+        onChange={handleValueChange}
         />
+        {producto.unidadMedida.simbolo} {/* ESTE PARAMETRO MODIFICA EL SIMBOLO */}
         {/* <span className={styles.displayQuantity}>{displayQuantity}</span> */}
       </td>
       <td className={styles.centerTd}>${subtotal.toFixed(2)}</td>
