@@ -25,7 +25,7 @@ sequelize.define('DetalleVenta', {
     },
   },
   cantidad: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.FLOAT,
     allowNull: false,
   },
   redondeo: {
