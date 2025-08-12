@@ -1,54 +1,72 @@
-import React, { useState } from "react";
-import { allProduct, clear } from "../../redux/actions";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { allProduct, clear, addProductToCart } from "../../redux/actions";
+import Swal from 'sweetalert2';
 import styles from "./SearchBar.module.scss";
 
 export default function SearchBar(props) {
-
-  const {searchInput, setSearchInput} = props
+  const { searchInput, setSearchInput } = props;
   const dispatch = useDispatch();
+  const allProducts = useSelector(state => state.productForAdmin);
 
-    const handleSubmit = (event) => {
-    event.preventDefault();
-  
-    if (searchInput.length !== 0) {
-      // Detecta si es un código de barra (solo números) o un nombre
-      const isCodigoBarra = /^\d+$/.test(searchInput); // Verifica si contiene solo números
-      const query = isCodigoBarra
-        ? `?codigo_barra=${searchInput}` // Si es código de barra
-        : `?nombre=${searchInput}`; // Si es nombre
-  
-      console.log('Query enviado:', query);
-      dispatch(allProduct(query)); // Envía el query al action
+  // Cargar todos los productos al montar el componente si no están cargados
+  useEffect(() => {
+    if (allProducts.length === 0) {
+      dispatch(allProduct(""));
+    }
+  }, [dispatch, allProducts.length]);
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    setSearchInput(newValue);
+
+    // Lógica para el escáner de código de barras
+    const productFound = allProducts.find(p => p.codigo_barra === newValue);
+
+    if (productFound) {
+      dispatch(addProductToCart(productFound, 1));
+      Swal.fire({
+        title: '¡Agregado!',
+        text: `${productFound.nombre} ha sido agregado al carrito.`,
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
+      // Limpiar el input para el siguiente escaneo
+      // Usamos un timeout para asegurar que el estado se actualice antes de limpiar
+      setTimeout(() => setSearchInput(""), 100);
     }
   };
 
-  const handleChange = (event) => {
-    setSearchInput(event.target.value);
-  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (searchInput.length > 0) {
+      const query = `?nombre=${searchInput}`;
+      dispatch(allProduct(query));
+    }
+  };
 
   const handleClear = () => {
-    setSearchInput("")
-    dispatch(clear())
-  }
+    setSearchInput("");
+    dispatch(clear());
+  };
 
   const handleAll = () => {
-    dispatch(allProduct(""))
-  }
+    dispatch(allProduct(""));
+  };
 
   return (
     <div className={styles.container}>
       <form className={styles.container_form} onSubmit={handleSubmit}>
         <input
           type="search"
-          placeholder="Ingresa nombre o codigo"
+          placeholder="Escanear código o buscar por nombre..."
           onChange={handleChange}
           value={searchInput} />
         <button type="submit">Buscar</button>
-        <button type="button" onClick={()=>handleClear()}>Limpiar</button>
-        <button type="button" onClick={()=>handleAll()}>Todos</button>
+        <button type="button" onClick={handleClear}>Limpiar</button>
+        <button type="button" onClick={handleAll}>Todos</button>
       </form>
-
     </div>
   );
 }
