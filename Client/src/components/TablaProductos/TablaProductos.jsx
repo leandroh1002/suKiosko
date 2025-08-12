@@ -34,9 +34,17 @@ const TablaProductos = () => {
     const product = products.find(p => p.id === productId);
     const editedData = editableData[productId] || {};
 
-    const newStock = editedData.nuevoStock !== undefined ? parseInt(product.stock) + parseInt(editedData.nuevoStock) : product.stock;
-    const newPrecioCompra = editedData.precioCompraNuevo !== undefined ? editedData.precioCompraNuevo : product.precio_compra;
-    const newPrecioVenta = editedData.precioVentaNuevo !== undefined ? editedData.precioVentaNuevo : product.redondeo;
+    // Correctly parse decimal numbers, replacing comma with dot, and ensure parseFloat is used.
+    const stockToAdd = editedData.nuevoStock ? parseFloat(String(editedData.nuevoStock).replace(',', '.')) : 0;
+    const newStock = editedData.nuevoStock !== undefined ? parseFloat(product.stock) + stockToAdd : product.stock;
+
+    const newPrecioCompra = editedData.precioCompraNuevo !== undefined 
+      ? parseFloat(String(editedData.precioCompraNuevo).replace(',', '.')) 
+      : product.precio_compra;
+
+    const newPrecioVenta = editedData.precioVentaNuevo !== undefined 
+      ? parseFloat(String(editedData.precioVentaNuevo).replace(',', '.')) 
+      : product.redondeo;
 
     const productData = {
       ...product,
@@ -46,6 +54,11 @@ const TablaProductos = () => {
     };
 
     dispatch(updateProduct(productId, productData));
+    // Clear the editable data for the specific product to reset inputs
+    setEditableData(prev => ({
+      ...prev,
+      [productId]: undefined,
+    }));
   };
 
   const filteredProducts = products.filter(product => {
