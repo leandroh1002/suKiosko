@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { allProduct, clear, addProductToCart } from "../../redux/actions";
+import { allProduct, clear, addProductToCart, updateProductQuantity } from "../../redux/actions";
 import Swal from 'sweetalert2';
 import styles from "./SearchBar.module.scss";
 
@@ -8,7 +8,9 @@ export default function SearchBar(props) {
   const { searchInput, setSearchInput } = props;
   const dispatch = useDispatch();
   const allProducts = useSelector(state => state.productForAdmin);
-
+  const cart = useSelector(state => state.cart);
+  console.log(cart , "search");
+  
   // Cargar todos los productos al montar el componente si no están cargados
   useEffect(() => {
     if (allProducts.length === 0) {
@@ -24,7 +26,13 @@ export default function SearchBar(props) {
     const productFound = allProducts.find(p => p.codigo_barra === newValue);
 
     if (productFound) {
-      dispatch(addProductToCart(productFound, 1));
+      const productInCart = cart.find(p => p.id === productFound.id);
+      if (productInCart) {
+        dispatch(updateProductQuantity(productInCart.id, productInCart.cantidad + 1));
+      } else {
+        dispatch(addProductToCart(productFound, 1));
+      }
+      
       Swal.fire({
         title: '¡Agregado!',
         text: `${productFound.nombre} ha sido agregado al carrito.`,

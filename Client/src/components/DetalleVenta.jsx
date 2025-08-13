@@ -5,25 +5,24 @@ import { clearventas, removeProductFromCart, updateCartItem } from '../redux/act
 import Checkout from './checkout';
 
 // Componente para manejar la lógica de cada fila de producto
-const ProductRow = ({ producto }) => {
+const ProductRow = ({ producto, subtotal }) => {
   const dispatch = useDispatch();
-  const [mode, setMode] = useState(producto.modo || 'unidad'); // 'unidad', 'peso', 'monto'
-  const [value, setValue] = useState(producto.valor || producto.cantidad);
+  const [mode, setMode] = useState(producto.modo || 'unidad');
+  const [value, setValue] = useState(producto.valor !== undefined ? producto.valor : producto.cantidad);
 
   const isWeightOrVolume = producto.unidadMedida && (producto.unidadMedida.nombre === 'Kilogramo' || producto.unidadMedida.nombre === 'Litro');
 
   useEffect(() => {
-    // Inicializa el modo y valor cuando el producto se carga
     const initialMode = producto.modo || (isWeightOrVolume ? 'peso' : 'unidad');
-    const initialValue = producto.valor || producto.cantidad;
     setMode(initialMode);
+    
+    const initialValue = producto.valor !== undefined ? producto.valor : producto.cantidad;
     setValue(initialValue);
-  }, [producto.id, isWeightOrVolume]);
+  }, [producto.id, isWeightOrVolume, producto.cantidad, producto.valor, producto.modo]);
 
   const handleModeChange = (newMode) => {
     setMode(newMode);
-    // Reset value when mode changes, or set a sensible default
-    setValue(0); 
+    setValue(0);
     dispatch(updateCartItem(producto.id, { modo: newMode, valor: 0 }));
   };
 
@@ -32,42 +31,10 @@ const ProductRow = ({ producto }) => {
     setValue(newValue);
     dispatch(updateCartItem(producto.id, { modo: mode, valor: newValue }));
   };
-  
+
   const handleRemove = () => {
     dispatch(removeProductFromCart(producto.id));
   };
-
-  // --- Cálculos para mostrar el subtotal ---
-  let subtotal = 0;
-  let displayQuantity = '';
-
-  if (isWeightOrVolume) {
-    const factor = producto.unidadMedida.factor_conversion || 1;
-    const basePrice = producto.redondeo || 0; // Precio por Kg o Litro
-
-    switch (mode) {
-      case 'peso': // El usuario introduce gramos/ml
-        subtotal = (basePrice / factor) * value;
-        displayQuantity = `${value} ${producto.unidadMedida.simbolo === 'L' ? 'ml' : 'gr'}`;
-        break;
-      case 'monto': // El usuario introduce un monto en $
-        subtotal = value;
-        const calculatedQty = (value / basePrice) * factor;
-        displayQuantity = `${calculatedQty.toFixed(2)} ${producto.unidadMedida.simbolo === 'L' ? 'ml' : 'gr'}`;
-        break;
-      case 'unidad': // El usuario introduce unidades (Kg/L)
-      default:
-        subtotal = basePrice * value;
-        displayQuantity = `${value} ${producto.unidadMedida.nombre}`;
-        break;
-    }
-  } else { // Venta por unidad estándar
-    subtotal = producto.redondeo * value;
-    displayQuantity = `${value} Unidades`;
-  }
-  
-  // Actualizamos el total en el producto para que el reduce funcione
-  producto.total = subtotal;
 
   return (
     <tr key={producto.id}>
@@ -80,16 +47,15 @@ const ProductRow = ({ producto }) => {
             <button onClick={() => handleModeChange('monto')} className={mode === 'monto' ? styles.active : ''}>Monto</button>
             <button onClick={() => handleModeChange('unidad')} className={mode === 'unidad' ? styles.active : ''}>Unidad</button>
           </div>
-      )}
+        )}
         <input
-        className={styles.centerTd}
-        type="number"
-        value={value}
-        min="0"
-        onChange={handleValueChange}
+          className={styles.centerTd}
+          type="number"
+          value={value}
+          min="0"
+          onChange={handleValueChange}
         />
         {producto.unidadMedida.simbolo} {/* ESTE PARAMETRO MODIFICA EL SIMBOLO */}
-        {/* <span className={styles.displayQuantity}>{displayQuantity}</span> */}
       </td>
       <td className={styles.centerTd}>${subtotal.toFixed(2)}</td>
       <td className={styles.mail}>
@@ -104,7 +70,37 @@ function DetalleVenta() {
   const dispatch = useDispatch();
   const productos = useSelector(state => state.cart);
 
-  const totalGeneral = productos.reduce((acc, item) => acc + (item.total || 0), 0);
+  const calculateSubtotal = (producto) => {
+    const { modo, valor, cantidad, redondeo, unidadMedida } = producto;
+    const isWeightOrVolume = unidadMedida && (unidadMedida.nombre === 'Kilogramo' || unidadMedida.nombre === 'Litro');
+    const currentMode = modo || (isWeightOrVolume ? 'peso' : 'unidad');
+    const currentValue = valor !== undefined ? valor : cantidad;
+
+    let subtotal = 0;
+
+    if (isWeightOrVolume) {
+        const factor = unidadMedida.factor_conversion || 1;
+        const basePrice = redondeo || 0;
+
+        switch (currentMode) {
+            case 'peso':
+                subtotal = (basePrice / factor) * currentValue;
+                break;
+            case 'monto':
+                subtotal = currentValue;
+                break;
+            case 'unidad':
+            default:
+                subtotal = basePrice * currentValue;
+                break;
+        }
+    } else {
+        subtotal = redondeo * currentValue;
+    }
+    return subtotal;
+  };
+
+  const totalGeneral = productos.reduce((acc, item) => acc + calculateSubtotal(item), 0);
 
   return (
     <div className='grid min-h-[90dvh] grid-rows-[auto_1fr_auto] m-5'>
@@ -122,9 +118,10 @@ function DetalleVenta() {
               </tr>
             </thead>
             <tbody>
-              {productos.map((producto) => (
-                <ProductRow key={producto.id} producto={producto} />
-              ))}
+              {productos.map((producto) => {
+                const subtotal = calculateSubtotal(producto);
+                return <ProductRow key={producto.id} producto={producto} subtotal={subtotal} />
+              })}
             </tbody>
           </table>
         </div>
