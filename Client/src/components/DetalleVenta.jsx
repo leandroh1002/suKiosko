@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styles from "./DetalleVentas.module.scss";
 import { useDispatch, useSelector } from 'react-redux';
 import { clearventas, removeProductFromCart, updateCartItem } from '../redux/actions';
 import Checkout from './checkout';
@@ -37,29 +36,31 @@ const ProductRow = ({ producto, subtotal }) => {
   };
 
   return (
-    <tr key={producto.id}>
-      <td className={styles.centerTd}>{producto.id}</td>
-      <td className={styles.centerTd}>{producto.nombre}</td>
-      <td className={styles.centerTd}>
+    <tr className="bg-white border-b">
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{producto.id}</td>
+      <td className="px-6 py-4">{producto.nombre}</td>
+      <td className="px-6 py-4">
         {isWeightOrVolume && (
-          <div className={styles.modeSelector}>
-            <button onClick={() => handleModeChange('peso')} className={mode === 'peso' ? styles.active : ''}>Cant.</button>
-            <button onClick={() => handleModeChange('monto')} className={mode === 'monto' ? styles.active : ''}>Monto</button>
-            <button onClick={() => handleModeChange('unidad')} className={mode === 'unidad' ? styles.active : ''}>Unidad</button>
+          <div className="flex items-center gap-2 mb-2">
+            <button onClick={() => handleModeChange('peso')} className={`px-2 py-1 text-xs rounded ${mode === 'peso' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>Cant.</button>
+            <button onClick={() => handleModeChange('monto')} className={`px-2 py-1 text-xs rounded ${mode === 'monto' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>Monto</button>
+            <button onClick={() => handleModeChange('unidad')} className={`px-2 py-1 text-xs rounded ${mode === 'unidad' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>Unidad</button>
           </div>
         )}
-        <input
-          className={styles.centerTd}
-          type="number"
-          value={value}
-          min="0"
-          onChange={handleValueChange}
-        />
-        {producto.unidadMedida.simbolo} {/* ESTE PARAMETRO MODIFICA EL SIMBOLO */}
+        <div className="flex items-center">
+          <input
+            className="w-24 px-2 py-1 border rounded"
+            type="number"
+            value={value}
+            min="0"
+            onChange={handleValueChange}
+          />
+          <span className="ml-2">{producto.descripcion}</span>
+        </div>
       </td>
-      <td className={styles.centerTd}>${subtotal.toFixed(2)}</td>
-      <td className={styles.mail}>
-        <button onClick={handleRemove}>Eliminar</button>
+      <td className="px-6 py-4">${subtotal.toFixed(2)}</td>
+      <td className="px-6 py-4">
+        <button onClick={handleRemove} className="font-medium text-red-600 hover:underline">Eliminar</button>
       </td>
     </tr>
   );
@@ -103,18 +104,17 @@ function DetalleVenta() {
   const totalGeneral = productos.reduce((acc, item) => acc + calculateSubtotal(item), 0);
 
   return (
-    <div className='grid min-h-[90dvh] grid-rows-[auto_1fr_auto] m-5'>
-      <h1>Lista de Compras</h1>
-      <div className={styles.wrapper}>
-        <div className={styles.tableWrapper}>
-          <table className={styles.table}>
-            <thead>
+    <div className='flex flex-col h-full p-4 bg-white rounded-lg shadow'>
+      <h1 className="text-lg font-semibold mb-4">Lista de Compras</h1>
+      <div className="flex-grow overflow-y-auto">
+          <table className="w-full text-sm text-left text-gray-500">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <th className={styles.firstTh}>#</th>
-                <th className={styles.centerTd}>Nombre</th>
-                <th className={styles.centerTd}>Venta</th>
-                <th className={styles.centerTd}>SubTotal</th>
-                <th className={styles.centerTd}>---</th>
+                <th scope="col" className="px-6 py-3">#</th>
+                <th scope="col" className="px-6 py-3">Nombre</th>
+                <th scope="col" className="px-6 py-3">Venta</th>
+                <th scope="col" className="px-6 py-3">SubTotal</th>
+                <th scope="col" className="px-6 py-3">Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -124,14 +124,15 @@ function DetalleVenta() {
               })}
             </tbody>
           </table>
-        </div>
       </div>
-      <footer>
-        <p className='bg-[#485c9d] text-white font-normal p-2 rounded-lg cursor-pointer px-5 py-2  transition duration-75 transform hover:scale-100 active:bg-[#5f7ad0] active:scale-100'>
-          Total: ${totalGeneral.toFixed(2)}
-        </p>
+      <footer className="mt-4">
+        <div className="flex justify-end items-center mb-4">
+            <p className='text-xl font-bold'>
+              Total: ${totalGeneral.toFixed(2)}
+            </p>
+        </div>
         <div className='flex justify-between'>
-          <button className='bg-[#A64208] text-white font-normal mt-3 p-2 rounded-lg cursor-pointer px-5 py-2 hover:bg-[#b45d2b] transition duration-75 transform hover:scale-105 active:bg-[#F2B138] active:scale-90' onClick={() => dispatch(clearventas())}>
+          <button className='bg-red-600 text-white font-normal p-2 rounded-lg cursor-pointer px-5 py-2 hover:bg-red-700 transition' onClick={() => dispatch(clearventas())}>
             Cancelar
           </button>
           <Checkout totalGeneral={totalGeneral} />

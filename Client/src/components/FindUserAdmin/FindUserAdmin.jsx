@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import TableUser from '../TableUser/TableUser';
-import styles from "./FindUserAdmin.module.scss";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function FindUserAdmin() {
 
@@ -10,13 +9,13 @@ function FindUserAdmin() {
   const [searchInput, setSearchInput] = useState("");
 
   return (
-    <div className={styles.background}>
-        <div className={styles.wrapper}>
-          <div className={styles.container}>
-            <p className={styles.title}>Buscar Producto</p>
+    <div className="p-4 bg-white rounded-lg shadow h-full flex flex-col">
+        <div className="mb-4">
+            <p className="text-lg font-semibold">Buscar Producto</p>
             <SearchBar searchInput={searchInput} setSearchInput={setSearchInput}/>
-          </div>
-          <TableUser productos={productos} searchInput={searchInput} />
+        </div>
+        <div className="flex-grow">
+            <TableUser productos={productos} searchInput={searchInput} />
         </div>
     </div>
   );
