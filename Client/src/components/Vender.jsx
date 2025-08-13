@@ -8,10 +8,10 @@ function Vender() {
   return (
     <div className="p-4 h-screen flex flex-col">
         <div className='flex flex-col lg:flex-row justify-center gap-4 flex-grow'>
-            <div className="lg:w-[67%] h-full">
+            <div className="lg:w-[67%] lg:h-full">
                 <ListaProducto/>
             </div>
-            <div className="lg:w-[33%] h-full">
+            <div className="lg:w-[33%] lg:h-full">
                 <DetalleVenta/>
             </div>
         </div>

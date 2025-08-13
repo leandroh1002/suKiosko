@@ -37,7 +37,7 @@ const ProductRow = ({ producto, subtotal }) => {
 
   return (
     <tr className="bg-white border-b">
-      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{producto.id}</td>
+      {/* <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{producto.id}</td> */}
       <td className="px-6 py-4">{producto.nombre}</td>
       <td className="px-6 py-4">
         {isWeightOrVolume && (
@@ -49,13 +49,13 @@ const ProductRow = ({ producto, subtotal }) => {
         )}
         <div className="flex items-center">
           <input
-            className="w-24 px-2 py-1 border rounded"
+            className="w-12 px-2 py-1 border rounded"
             type="number"
             value={value}
             min="0"
             onChange={handleValueChange}
           />
-          <span className="ml-2">{producto.descripcion}</span>
+          <span className="ml-1">{producto.descripcion}</span>
         </div>
       </td>
       <td className="px-6 py-4">${subtotal.toFixed(2)}</td>
@@ -110,7 +110,7 @@ function DetalleVenta() {
           <table className="w-full text-sm text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <th scope="col" className="px-6 py-3">#</th>
+                {/* <th scope="col" className="px-6 py-3">#</th> */}
                 <th scope="col" className="px-6 py-3">Nombre</th>
                 <th scope="col" className="px-6 py-3">Venta</th>
                 <th scope="col" className="px-6 py-3">SubTotal</th>
