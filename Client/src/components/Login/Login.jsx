@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import PATHROUTES from '../../helpers/PathRoutes.helper';
 import styles from './Login.module.scss';
 import { empleadoLoginSuccess } from '../../redux/actions';
@@ -14,6 +15,16 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!username || !password) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Por favor, completa todos los campos.',
+            });
+            return;
+        }
+
         try {
             const response = await axios.post('/login', { username, password });
 
@@ -24,7 +35,20 @@ const Login = () => {
                 console.error('Login failed');
             }
         } catch (error) {
-            console.error('An error occurred during login:', error);
+            if (error.response && error.response.data && error.response.data.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de autenticación',
+                    text: error.response.data.error,
+                });
+            } else {
+                console.error('An error occurred during login:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocurrió un error durante el inicio de sesión.',
+                });
+            }
         }
     };
 
@@ -39,7 +63,6 @@ const Login = () => {
                         id="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        required
                     />
                 </div>
                 <div className={styles.inputGroup}>
@@ -49,7 +72,6 @@ const Login = () => {
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required
                     />
                 </div>
                 <button type="submit" className={styles.loginButton}>Ingresar</button>
