@@ -18,11 +18,11 @@ const postProductosController = async (req, res) => {
         descripcion: producto.descripcion,
         codigo_barra: producto.codigo_barra,
         stock: producto.stock,
-        precio_compra: producto.precio_unitario || 0.00, // Usar precio_unitario o default
-        redondeo: producto.Redondeo,
+        precio_compra: producto.precio_compra || 0.00, // Usar precio_unitario o default
+        redondeo: producto.redondeo,
         vencimiento: producto.Vencimiento ? producto.Vencimiento.split('/').reverse().join('-') : '2050-01-01', // Convertir DD/MM/YYYY a YYYY-MM-DD
-        unidad_medida_id: producto.UnidadMedida,
-        rubro_id: producto.Rubro,
+        unidad_medida_id: producto.unidad_medida_id,
+        rubro_id: producto.rubro_id,
       };
 
       // Validar que los campos requeridos existan después de la transformación
