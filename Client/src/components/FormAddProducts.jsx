@@ -202,8 +202,14 @@ function FormAddProducts() {
               name="codigo_barra"
               value={productData.codigo_barra}
               onChange={handleChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault(); // <-- Previene que se envíe el formulario
+                }
+              }}
               required
             />
+
           </div>
 
           {/* <div className="mb-4">

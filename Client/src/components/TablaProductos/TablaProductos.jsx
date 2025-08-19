@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { allProduct, updateProduct } from '../../redux/actions';
+import { allProduct, updateProduct, getRubros } from '../../redux/actions';
 import styles from './TablaProductos.module.scss';
 import PATHROUTES from '../../helpers/PathRoutes.helper';
 import { Link } from 'react-router-dom';
@@ -9,11 +9,13 @@ import { Link } from 'react-router-dom';
 const TablaProductos = () => {
   const dispatch = useDispatch();
   const products = useSelector(state => state.productForAdmin);
+  const rubros = useSelector(state => state.allRubros);
   const [searchTerm, setSearchTerm] = useState('');
   const [editableData, setEditableData] = useState({});
 
   useEffect(() => {
     dispatch(allProduct(''));
+    dispatch(getRubros());
   }, [dispatch]);
 
   const handleSearch = (event) => {
@@ -34,27 +36,19 @@ const TablaProductos = () => {
     const product = products.find(p => p.id === productId);
     const editedData = editableData[productId] || {};
 
-    // Correctly parse decimal numbers, replacing comma with dot, and ensure parseFloat is used.
-    const stockToAdd = editedData.nuevoStock ? parseFloat(String(editedData.nuevoStock).replace(',', '.')) : 0;
-    const newStock = editedData.nuevoStock !== undefined ? parseFloat(product.stock) + stockToAdd : product.stock;
-
-    const newPrecioCompra = editedData.precioCompraNuevo !== undefined 
-      ? parseFloat(String(editedData.precioCompraNuevo).replace(',', '.')) 
-      : product.precio_compra;
-
-    const newPrecioVenta = editedData.precioVentaNuevo !== undefined 
-      ? parseFloat(String(editedData.precioVentaNuevo).replace(',', '.')) 
-      : product.redondeo;
-
     const productData = {
       ...product,
-      stock: newStock,
-      precio_compra: newPrecioCompra,
-      redondeo: newPrecioVenta,
+      nombre: editedData.nombre !== undefined ? editedData.nombre : product.nombre,
+      descripcion: editedData.descripcion !== undefined ? editedData.descripcion : product.descripcion,
+      codigo_barra: editedData.codigo_barra !== undefined ? editedData.codigo_barra : product.codigo_barra,
+      fecha_vencimiento: editedData.fecha_vencimiento !== undefined ? editedData.fecha_vencimiento : (product.Vencimientos && product.Vencimientos.length > 0 ? product.Vencimientos[0].fechaVencimiento : null),
+      // rubro_id: editedData.rubro_id !== undefined ? editedData.rubro_id : product.rubro_id,
+      stock: editedData.nuevoStock !== undefined ? parseFloat(product.stock) + parseFloat(String(editedData.nuevoStock).replace(',', '.')) : product.stock,
+      precio_compra: editedData.precioCompraNuevo !== undefined ? parseFloat(String(editedData.precioCompraNuevo).replace(',', '.')) : product.precio_compra,
+      redondeo: editedData.precioVentaNuevo !== undefined ? parseFloat(String(editedData.precioVentaNuevo).replace(',', '.')) : product.redondeo,
     };
 
     dispatch(updateProduct(productId, productData));
-    // Clear the editable data for the specific product to reset inputs
     setEditableData(prev => ({
       ...prev,
       [productId]: undefined,
@@ -65,9 +59,12 @@ const TablaProductos = () => {
     const searchTermLower = searchTerm.toLowerCase();
     return (
       product.nombre.toLowerCase().includes(searchTermLower) ||
-      product.codigo_barra?.toLowerCase().includes(searchTermLower)    );
+      product.codigo_barra?.toLowerCase().includes(searchTermLower)
+    );
   });
 
+  console.log(filteredProducts, "Filtered Products");
+  
   return (
     <div className={styles.container}>
       <input
@@ -78,7 +75,8 @@ const TablaProductos = () => {
         className={styles.searchInput}
       />
       <Link to={PATHROUTES.REVISIONSTOCK} className='bg-[#a64208] text-white font-normal mb-7 p-2 rounded-lg cursor-pointer px-5 py-2 hover:bg-[#b45d2b] transition duration-75 transform hover:scale-105 active:bg-[#F2B138] active:scale-90 '>
-      <button className='mb-4' >Volver</button></Link>
+        <button className='mb-4' >Volver</button>
+      </Link>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -100,10 +98,39 @@ const TablaProductos = () => {
           {filteredProducts.map(product => (
             <tr key={product.id}>
               <td>{product.Rubro ? product.Rubro.nombre : 'N/A'}</td>
-              <td>{product.nombre}</td>
-              <td>{product.descripcion}</td>
-              <td>{new Date(product.vencimiento).toLocaleDateString()}</td>
-              <td>{product.codigo_barra ? product.codigo_barra.padStart(13, '0') : 'N/A'}</td>
+              <td>
+                <input
+                  type="text"
+                  value={editableData[product.id]?.nombre || product.nombre}
+                  onChange={(e) => handleInputChange(product.id, 'nombre', e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={editableData[product.id]?.descripcion || product.descripcion}
+                  onChange={(e) => handleInputChange(product.id, 'descripcion', e.target.value)}
+                />
+              </td>
+              <td>
+                {product.vencimiento && product.vencimiento.length > 0
+                  ? new Date(product.vencimiento).toLocaleDateString()
+                  : 'Sin vencimiento'}
+              </td>
+              {/* <td>
+                <input
+                  type="date"
+                  value={editableData[product.id]?.fecha_vencimiento || (product.Vencimientos && product.Vencimientos.length > 0 ? new Date(product.Vencimientos[0].fechaVencimiento).toISOString().split('T')[0] : '')}
+                  onChange={(e) => handleInputChange(product.id, 'fecha_vencimiento', e.target.value)}
+                />
+              </td> */}
+              <td>
+                <input
+                  type="text"
+                  value={editableData[product.id]?.codigo_barra || (product.codigo_barra ? product.codigo_barra.padStart(13, '0') : '')}
+                  onChange={(e) => handleInputChange(product.id, 'codigo_barra', e.target.value)}
+                />
+              </td>
               <td>{product.stock}</td>
               <td>
                 <input
@@ -139,3 +166,4 @@ const TablaProductos = () => {
 };
 
 export default TablaProductos;
+''
