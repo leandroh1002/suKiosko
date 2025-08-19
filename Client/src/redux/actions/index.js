@@ -20,7 +20,8 @@ import {
   UPDATE_PRODUCT_QUANTITY,
   GET_VENTAS,
   EMPLEADO_LOGIN_SUCCESS,
-  UPDATE_PRODUCT
+  UPDATE_PRODUCT,
+  GET_RUBROS
 } from "../actions/action-types";
 
 
@@ -309,6 +310,25 @@ const updateProduct = (id, productData) => {
   };
 };
 
+  const getRubros = () => {
+    return async (dispatch) => {
+      try {
+        const response = await axios.get(`${REACT_APP_API_URL}/rubros`);
+        return dispatch({
+          type: GET_RUBROS,
+          payload: response.data,
+        });
+      } catch (error) {
+        Swal.fire({
+          title: `${error}`,
+          text: "Error al obtener los rubros",
+          icon: 'warning',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    };
+  };
+
   export {
     getSomePublish,
     getAllPublish,
@@ -325,6 +345,7 @@ const updateProduct = (id, productData) => {
     postVenta,
     empleadoLoginSuccess,
     getVentas,
-    updateProduct
+    updateProduct,
+    getRubros
   };
   
