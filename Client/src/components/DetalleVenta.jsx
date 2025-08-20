@@ -101,7 +101,21 @@ function DetalleVenta() {
     return subtotal;
   };
 
+  const [recibi, setRecibi] = useState(0); // Estado para almacenar el valor ingresado
+
   const totalGeneral = productos.reduce((acc, item) => acc + calculateSubtotal(item), 0);
+
+  const handleInputChange = (e) => {
+    setRecibi(parseFloat(e.target.value) || 0); // Actualiza el estado con el valor ingresado
+  };
+
+  useEffect(() => {
+    if (totalGeneral === 0) {
+      setRecibi(0);
+    }
+  }, [totalGeneral]);
+  
+  const vuelto = recibi - totalGeneral; // Calcula el vuelto
 
   return (
     <div className='flex flex-col h-full p-4 bg-white rounded-lg shadow'>
@@ -126,9 +140,22 @@ function DetalleVenta() {
           </table>
       </div>
       <footer className="mt-4">
-        <div className="flex justify-end items-center mb-4">
+        <div className="flex flex-col justify-end items-end mb-4">
             <p className='text-xl font-bold'>
               Total: ${totalGeneral.toFixed(2)}
+            </p>
+            <p className='text-xl font-bold'>
+              Recibi: $
+              <input 
+                className='text-xl font-bold text-right w-24'
+                type='number'
+                value={recibi}   // 👈 aquí
+                onChange={handleInputChange} 
+                placeholder='0.00'
+              />
+            </p>
+            <p className='text-xl font-bold'>
+              Su vuelto: ${vuelto.toFixed(2)}
             </p>
         </div>
         <div className='flex justify-between'>
