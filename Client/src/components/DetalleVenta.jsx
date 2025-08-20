@@ -49,13 +49,13 @@ const ProductRow = ({ producto, subtotal }) => {
         )}
         <div className="flex items-center">
           <input
-            className="w-12 px-2 py-1 border rounded"
+            className="w-16 py-1 border rounded"
             type="number"
             value={value}
             min="0"
             onChange={handleValueChange}
           />
-          <span className="ml-1">{producto.descripcion}</span>
+          <span className="ml-1">{producto.unidadMedida.simbolo}</span>
         </div>
       </td>
       <td className="px-6 py-4">${subtotal.toFixed(2)}</td>
@@ -126,7 +126,7 @@ function DetalleVenta() {
               <tr>
                 {/* <th scope="col" className="px-6 py-3">#</th> */}
                 <th scope="col" className="px-6 py-3">Nombre</th>
-                <th scope="col" className="px-6 py-3">Venta</th>
+                <th scope="col" className="px-8 py-3">Venta</th>
                 <th scope="col" className="px-6 py-3">SubTotal</th>
                 <th scope="col" className="px-6 py-3">Acción</th>
               </tr>
