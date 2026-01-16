@@ -186,6 +186,11 @@ echarts.use([
 ]);
 
 function PieChartComponent({ data }) {
+  const formattedData = data.map(item => ({
+    ...item,
+    value: parseFloat(item.value.toFixed(2)) // Redondea a 2 decimales
+  }));
+
   useEffect(() => {
     const chartDom = document.getElementById("pie-chart");
     if (chartDom && data) {
@@ -223,7 +228,7 @@ function PieChartComponent({ data }) {
             name: "Ventas y Gastos",
             type: "pie",
             radius: "50%",
-            data: data,
+            data: formattedData,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
