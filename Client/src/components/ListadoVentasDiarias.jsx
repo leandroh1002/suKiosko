@@ -24,10 +24,18 @@ const ListadoVentasDiarias = () => {
                 const resVentas = await axios.get(`${REACT_APP_API_URL}/ventas`);
                 const ventasData = resVentas.data;
                 setVentas(ventasData);
-
-                const fechas = [...new Set(ventasData.map(venta => new Date(venta.fecha).toISOString().split('T')[0]))];
-                setFechasUnicas(fechas.sort().reverse());
-
+                // Elimina duplicados y ordena las fechas cronológicamente
+                const fechas = [...new Set(ventasData.map(venta => {
+                    const fecha = new Date(venta.fecha);
+                    return fecha.toLocaleDateString('es-ES'); // Usa la zona horaria local
+                }))]
+                    .sort((a, b) => {
+                        const fechaA = new Date(a.split('/').reverse().join('-')); // Convierte DD/MM/YYYY a YYYY-MM-DD
+                        const fechaB = new Date(b.split('/').reverse().join('-'));
+                        return fechaB - fechaA; // Ordena de más reciente a más antiguo
+                    });
+    
+                setFechasUnicas(fechas);
                 setLoading(false);
             } catch (err) {
                 setError('Error al cargar los datos de ventas. Por favor, inténtalo de nuevo más tarde.');
@@ -35,13 +43,15 @@ const ListadoVentasDiarias = () => {
                 console.error(err);
             }
         };
-
+    
         fetchData();
     }, []);
 
     useEffect(() => {
         if (fechaSeleccionada) {
-            const ventasDelDia = ventas.filter(venta => new Date(venta.fecha).toISOString().split('T')[0] === fechaSeleccionada);
+            const ventasDelDia = ventas.filter(venta => 
+                new Date(venta.fecha).toLocaleDateString('es-ES') === fechaSeleccionada
+            );
             
             const todosLosDetalles = ventasDelDia.flatMap(venta => {
                 const hora = new Date(venta.fecha).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
