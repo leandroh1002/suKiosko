@@ -114,10 +114,10 @@ function ControlVentas() {
                     <div>
                         <h2 className='text-xl font-bold mb-2'>Resumen Financiero</h2>
                         <div className='bg-gray-100 p-4 rounded'>
-                            <p>Dinero para Recompra: ${totalRecompra.toFixed(2)}</p>
-                            <p>Ganancia Bruta (Ventas): ${gananciaBruta.toFixed(2)}</p>
-                            <p>Total Gastos: ${totalGastos.toFixed(2)}</p>
-                            <p className='font-bold'>Ganancia Neta Real: ${gananciaNeta.toFixed(2)}</p>
+                            <p>Dinero para Recompra: {totalRecompra.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</p>
+                            <p>Ganancia Bruta (Ventas): {gananciaBruta.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</p>
+                            <p>Total Gastos: {totalGastos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</p>
+                            <p className='font-bold'>Ganancia Neta Real: {gananciaNeta.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}</p>
                         </div>
                     </div>
                 </div>
